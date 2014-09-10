@@ -1,0 +1,485 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FD1247C619BEE63A008FEFD1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD1247C519BEE63A008FEFD1 /* Foundation.framework */; };
+		FD1247C819BEE63A008FEFD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD1247C719BEE63A008FEFD1 /* CoreGraphics.framework */; };
+		FD1247CA19BEE63A008FEFD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD1247C919BEE63A008FEFD1 /* UIKit.framework */; };
+		FD1247D019BEE63A008FEFD1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FD1247CE19BEE63A008FEFD1 /* InfoPlist.strings */; };
+		FD1247D219BEE63A008FEFD1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1247D119BEE63A008FEFD1 /* main.m */; };
+		FD1247D619BEE63A008FEFD1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1247D519BEE63A008FEFD1 /* AppDelegate.m */; };
+		FD1247D819BEE63A008FEFD1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD1247D719BEE63A008FEFD1 /* Images.xcassets */; };
+		FD1247DF19BEE63A008FEFD1 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD1247DE19BEE63A008FEFD1 /* XCTest.framework */; };
+		FD1247E019BEE63A008FEFD1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD1247C519BEE63A008FEFD1 /* Foundation.framework */; };
+		FD1247E119BEE63A008FEFD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD1247C919BEE63A008FEFD1 /* UIKit.framework */; };
+		FD1247E919BEE63A008FEFD1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FD1247E719BEE63A008FEFD1 /* InfoPlist.strings */; };
+		FD1247EB19BEE63A008FEFD1 /* Don_t_Thieve_MeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1247EA19BEE63A008FEFD1 /* Don_t_Thieve_MeTests.m */; };
+		FD1247F619BEE89C008FEFD1 /* GameView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1247F519BEE89C008FEFD1 /* GameView.m */; };
+		FD1247F919BEE9E0008FEFD1 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1247F819BEE9E0008FEFD1 /* GameViewController.m */; };
+		FD1247FC19BEF140008FEFD1 /* GameLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1247FB19BEF140008FEFD1 /* GameLabelView.m */; };
+		FD14109B19BFE91B005BBCEB /* EnemyView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14109A19BFE91B005BBCEB /* EnemyView.m */; };
+		FD14109E19BFEBCD005BBCEB /* EnemyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FD1247E219BEE63A008FEFD1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD1247BA19BEE63A008FEFD1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD1247C119BEE63A008FEFD1;
+			remoteInfo = "Don't Thieve Me";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		FD1247C219BEE63A008FEFD1 /* Don't Thieve Me.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Don't Thieve Me.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD1247C519BEE63A008FEFD1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		FD1247C719BEE63A008FEFD1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		FD1247C919BEE63A008FEFD1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		FD1247CD19BEE63A008FEFD1 /* Don't Thieve Me-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Don't Thieve Me-Info.plist"; sourceTree = "<group>"; };
+		FD1247CF19BEE63A008FEFD1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FD1247D119BEE63A008FEFD1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FD1247D319BEE63A008FEFD1 /* Don't Thieve Me-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Don't Thieve Me-Prefix.pch"; sourceTree = "<group>"; };
+		FD1247D419BEE63A008FEFD1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		FD1247D519BEE63A008FEFD1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		FD1247D719BEE63A008FEFD1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		FD1247DD19BEE63A008FEFD1 /* Don't Thieve MeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Don't Thieve MeTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD1247DE19BEE63A008FEFD1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		FD1247E619BEE63A008FEFD1 /* Don't Thieve MeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Don't Thieve MeTests-Info.plist"; sourceTree = "<group>"; };
+		FD1247E819BEE63A008FEFD1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FD1247EA19BEE63A008FEFD1 /* Don_t_Thieve_MeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Don_t_Thieve_MeTests.m; sourceTree = "<group>"; };
+		FD1247F419BEE89C008FEFD1 /* GameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameView.h; sourceTree = "<group>"; };
+		FD1247F519BEE89C008FEFD1 /* GameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameView.m; sourceTree = "<group>"; };
+		FD1247F719BEE9E0008FEFD1 /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
+		FD1247F819BEE9E0008FEFD1 /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
+		FD1247FA19BEF140008FEFD1 /* GameLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLabelView.h; sourceTree = "<group>"; };
+		FD1247FB19BEF140008FEFD1 /* GameLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLabelView.m; sourceTree = "<group>"; };
+		FD14109919BFE91B005BBCEB /* EnemyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyView.h; sourceTree = "<group>"; };
+		FD14109A19BFE91B005BBCEB /* EnemyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyView.m; sourceTree = "<group>"; };
+		FD14109C19BFEBCD005BBCEB /* EnemyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyViewController.h; sourceTree = "<group>"; };
+		FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FD1247BF19BEE63A008FEFD1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD1247C819BEE63A008FEFD1 /* CoreGraphics.framework in Frameworks */,
+				FD1247CA19BEE63A008FEFD1 /* UIKit.framework in Frameworks */,
+				FD1247C619BEE63A008FEFD1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD1247DA19BEE63A008FEFD1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD1247DF19BEE63A008FEFD1 /* XCTest.framework in Frameworks */,
+				FD1247E119BEE63A008FEFD1 /* UIKit.framework in Frameworks */,
+				FD1247E019BEE63A008FEFD1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FD1247B919BEE63A008FEFD1 = {
+			isa = PBXGroup;
+			children = (
+				FD1247CB19BEE63A008FEFD1 /* Don't Thieve Me */,
+				FD1247E419BEE63A008FEFD1 /* Don't Thieve MeTests */,
+				FD1247C419BEE63A008FEFD1 /* Frameworks */,
+				FD1247C319BEE63A008FEFD1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FD1247C319BEE63A008FEFD1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FD1247C219BEE63A008FEFD1 /* Don't Thieve Me.app */,
+				FD1247DD19BEE63A008FEFD1 /* Don't Thieve MeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FD1247C419BEE63A008FEFD1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FD1247C519BEE63A008FEFD1 /* Foundation.framework */,
+				FD1247C719BEE63A008FEFD1 /* CoreGraphics.framework */,
+				FD1247C919BEE63A008FEFD1 /* UIKit.framework */,
+				FD1247DE19BEE63A008FEFD1 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FD1247CB19BEE63A008FEFD1 /* Don't Thieve Me */ = {
+			isa = PBXGroup;
+			children = (
+				FD1247D419BEE63A008FEFD1 /* AppDelegate.h */,
+				FD1247D519BEE63A008FEFD1 /* AppDelegate.m */,
+				FD1247F719BEE9E0008FEFD1 /* GameViewController.h */,
+				FD1247F819BEE9E0008FEFD1 /* GameViewController.m */,
+				FD14109919BFE91B005BBCEB /* EnemyView.h */,
+				FD14109A19BFE91B005BBCEB /* EnemyView.m */,
+				FD14109C19BFEBCD005BBCEB /* EnemyViewController.h */,
+				FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */,
+				FD1247F419BEE89C008FEFD1 /* GameView.h */,
+				FD1247F519BEE89C008FEFD1 /* GameView.m */,
+				FD1247FA19BEF140008FEFD1 /* GameLabelView.h */,
+				FD1247FB19BEF140008FEFD1 /* GameLabelView.m */,
+				FD1247D719BEE63A008FEFD1 /* Images.xcassets */,
+				FD1247CC19BEE63A008FEFD1 /* Supporting Files */,
+			);
+			path = "Don't Thieve Me";
+			sourceTree = "<group>";
+		};
+		FD1247CC19BEE63A008FEFD1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FD1247CD19BEE63A008FEFD1 /* Don't Thieve Me-Info.plist */,
+				FD1247CE19BEE63A008FEFD1 /* InfoPlist.strings */,
+				FD1247D119BEE63A008FEFD1 /* main.m */,
+				FD1247D319BEE63A008FEFD1 /* Don't Thieve Me-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FD1247E419BEE63A008FEFD1 /* Don't Thieve MeTests */ = {
+			isa = PBXGroup;
+			children = (
+				FD1247EA19BEE63A008FEFD1 /* Don_t_Thieve_MeTests.m */,
+				FD1247E519BEE63A008FEFD1 /* Supporting Files */,
+			);
+			path = "Don't Thieve MeTests";
+			sourceTree = "<group>";
+		};
+		FD1247E519BEE63A008FEFD1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FD1247E619BEE63A008FEFD1 /* Don't Thieve MeTests-Info.plist */,
+				FD1247E719BEE63A008FEFD1 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FD1247C119BEE63A008FEFD1 /* Don't Thieve Me */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD1247EE19BEE63A008FEFD1 /* Build configuration list for PBXNativeTarget "Don't Thieve Me" */;
+			buildPhases = (
+				FD1247BE19BEE63A008FEFD1 /* Sources */,
+				FD1247BF19BEE63A008FEFD1 /* Frameworks */,
+				FD1247C019BEE63A008FEFD1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Don't Thieve Me";
+			productName = "Don't Thieve Me";
+			productReference = FD1247C219BEE63A008FEFD1 /* Don't Thieve Me.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FD1247DC19BEE63A008FEFD1 /* Don't Thieve MeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD1247F119BEE63A008FEFD1 /* Build configuration list for PBXNativeTarget "Don't Thieve MeTests" */;
+			buildPhases = (
+				FD1247D919BEE63A008FEFD1 /* Sources */,
+				FD1247DA19BEE63A008FEFD1 /* Frameworks */,
+				FD1247DB19BEE63A008FEFD1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD1247E319BEE63A008FEFD1 /* PBXTargetDependency */,
+			);
+			name = "Don't Thieve MeTests";
+			productName = "Don't Thieve MeTests";
+			productReference = FD1247DD19BEE63A008FEFD1 /* Don't Thieve MeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FD1247BA19BEE63A008FEFD1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				TargetAttributes = {
+					FD1247DC19BEE63A008FEFD1 = {
+						TestTargetID = FD1247C119BEE63A008FEFD1;
+					};
+				};
+			};
+			buildConfigurationList = FD1247BD19BEE63A008FEFD1 /* Build configuration list for PBXProject "Don't Thieve Me" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FD1247B919BEE63A008FEFD1;
+			productRefGroup = FD1247C319BEE63A008FEFD1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FD1247C119BEE63A008FEFD1 /* Don't Thieve Me */,
+				FD1247DC19BEE63A008FEFD1 /* Don't Thieve MeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FD1247C019BEE63A008FEFD1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD1247D019BEE63A008FEFD1 /* InfoPlist.strings in Resources */,
+				FD1247D819BEE63A008FEFD1 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD1247DB19BEE63A008FEFD1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD1247E919BEE63A008FEFD1 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FD1247BE19BEE63A008FEFD1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD1247F919BEE9E0008FEFD1 /* GameViewController.m in Sources */,
+				FD14109E19BFEBCD005BBCEB /* EnemyViewController.m in Sources */,
+				FD1247FC19BEF140008FEFD1 /* GameLabelView.m in Sources */,
+				FD1247F619BEE89C008FEFD1 /* GameView.m in Sources */,
+				FD1247D619BEE63A008FEFD1 /* AppDelegate.m in Sources */,
+				FD1247D219BEE63A008FEFD1 /* main.m in Sources */,
+				FD14109B19BFE91B005BBCEB /* EnemyView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD1247D919BEE63A008FEFD1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD1247EB19BEE63A008FEFD1 /* Don_t_Thieve_MeTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FD1247E319BEE63A008FEFD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FD1247C119BEE63A008FEFD1 /* Don't Thieve Me */;
+			targetProxy = FD1247E219BEE63A008FEFD1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FD1247CE19BEE63A008FEFD1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FD1247CF19BEE63A008FEFD1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FD1247E719BEE63A008FEFD1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FD1247E819BEE63A008FEFD1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FD1247EC19BEE63A008FEFD1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		FD1247ED19BEE63A008FEFD1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FD1247EF19BEE63A008FEFD1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Don't Thieve Me/Don't Thieve Me-Prefix.pch";
+				INFOPLIST_FILE = "Don't Thieve Me/Don't Thieve Me-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		FD1247F019BEE63A008FEFD1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Don't Thieve Me/Don't Thieve Me-Prefix.pch";
+				INFOPLIST_FILE = "Don't Thieve Me/Don't Thieve Me-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		FD1247F219BEE63A008FEFD1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Don't Thieve Me.app/Don't Thieve Me";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Don't Thieve Me/Don't Thieve Me-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Don't Thieve MeTests/Don't Thieve MeTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		FD1247F319BEE63A008FEFD1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Don't Thieve Me.app/Don't Thieve Me";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Don't Thieve Me/Don't Thieve Me-Prefix.pch";
+				INFOPLIST_FILE = "Don't Thieve MeTests/Don't Thieve MeTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FD1247BD19BEE63A008FEFD1 /* Build configuration list for PBXProject "Don't Thieve Me" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD1247EC19BEE63A008FEFD1 /* Debug */,
+				FD1247ED19BEE63A008FEFD1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD1247EE19BEE63A008FEFD1 /* Build configuration list for PBXNativeTarget "Don't Thieve Me" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD1247EF19BEE63A008FEFD1 /* Debug */,
+				FD1247F019BEE63A008FEFD1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD1247F119BEE63A008FEFD1 /* Build configuration list for PBXNativeTarget "Don't Thieve MeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD1247F219BEE63A008FEFD1 /* Debug */,
+				FD1247F319BEE63A008FEFD1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FD1247BA19BEE63A008FEFD1 /* Project object */;
+}
