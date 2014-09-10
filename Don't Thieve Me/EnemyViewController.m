@@ -9,32 +9,48 @@
 #import "EnemyViewController.h"
 #import "EnemyView.h"
 
-int const CONTENT_WIDTH = 960; //Float this
+int const CONTENT_WIDTH = 960;
 int const I4IR_HEIGHT = 568;
+int const WIDTH = 320;
+int const DWIDTH = 640;
+//int const I4IR_WIDTH = 320; //unused for now, but will be used later on
+
 int const IMAGE_WIDTH = 40;
 int const IMAGE_HEIGHT = 70;
 
 float const LIFE_TIMER = 5;
+int const CLOCK_TICK = 1;
 
 float const APPEAR_DURATION = 0.4;
 float const DISAPPEAR_DURATION = 0.4;
+float const VISIBLE = 1;
+float const NOT_VISIBLE = 0;
+
+int const GAME_QUADRANTS = 3;
+typedef enum
+{
+    FIRST = 0,
+    SECOND = 1,
+    THIRD = 2,
+}GameQuadrant;
 
 @interface EnemyViewController ()
 @property (nonatomic, retain) EnemyView *enemyView;
 @property (nonatomic, retain) NSTimer *lifeTimer;
+@property (nonatomic, assign) float lifeTimeCurrent;
 
-@property (nonatomic, assign) CGPoint randomPoint; //Might pile up, move to game view or destroy quickly
+@property (nonatomic, assign) GameQuadrant randomQuadrant;
+@property (nonatomic, assign) CGPoint randomPoint;
 @property (nonatomic, assign) CGRect currentFrame;
 @end
 
 @implementation EnemyViewController
 -(void)loadView
 {
-    EnemyView *view = [[EnemyView alloc] initAtPoint:[self getRandomPoint]];
+    EnemyView *view = [[EnemyView alloc] initAtPoint:[self getRandomPointInRandomQuadrant]];
     _enemyView = view;
     _enemyView.controller = self;
     
-
     [self setView:_enemyView];
     [view release];
     
@@ -42,25 +58,35 @@ float const DISAPPEAR_DURATION = 0.4;
 }
 -(void)startLifeTimer
 {
-    _lifeTimer = [NSTimer scheduledTimerWithTimeInterval:LIFE_TIMER
+    _lifeTimeCurrent = LIFE_TIMER;
+    _lifeTimer = [NSTimer scheduledTimerWithTimeInterval:CLOCK_TICK
                                                   target:self
                                                 selector:@selector(lifeTimerFire:)
                                                 userInfo:nil
-                                                 repeats:NO];
+                                                 repeats:YES];
+    [_enemyView viewRefreshWithTime:_lifeTimeCurrent];
 }
+
 -(void)lifeTimerFire:(NSTimer *)timer
 {
-    [self expireLifeTimerWithEnemyDefeaated:NO];
+    _lifeTimeCurrent--;
+    if (_lifeTimeCurrent == 0)
+    {
+        [self expireLifeTimerWithEnemyDefeated:NO];
+    } else
+    {
+        [_enemyView viewRefreshWithTime:_lifeTimeCurrent];
+    }
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self expireLifeTimerWithEnemyDefeaated:YES];
-
+    [self expireLifeTimerWithEnemyDefeated:YES];
 }
 
--(void)expireLifeTimerWithEnemyDefeaated:(BOOL)boolean
+-(void)expireLifeTimerWithEnemyDefeated:(BOOL)boolean
 {
     [_lifeTimer invalidate];
+    _lifeTimer = nil; //Should I keep nil here or just remove it? The timer restarts at the end of this method
     if(boolean == YES)
         [_delegate enemyWasDefeated];
     if(boolean == NO)
@@ -68,16 +94,16 @@ float const DISAPPEAR_DURATION = 0.4;
     
     [UIView animateWithDuration:APPEAR_DURATION
                      animations:^{
-                         _enemyView.alpha = 0;
+                         _enemyView.alpha = NOT_VISIBLE;
                      }
                      completion:^(BOOL finished)
      {
          _currentFrame = _enemyView.frame;
-         _currentFrame.origin = [self getRandomPoint];
+         _currentFrame.origin = [self getRandomPointInRandomQuadrant];
          _enemyView.frame = _currentFrame;
          [UIView animateWithDuration:DISAPPEAR_DURATION
                           animations:^{
-                              _enemyView.alpha = 1.0;
+                              _enemyView.alpha = VISIBLE;
                           }
                           completion:^(BOOL finished)
           {
@@ -86,13 +112,33 @@ float const DISAPPEAR_DURATION = 0.4;
      }];
 }
 
+-(CGPoint)getRandomPointInRandomQuadrant
+{
+    _randomQuadrant = arc4random() % GAME_QUADRANTS;
+    _randomPoint = [self getRandomPoint];
+    
+//    METHOD ALREADY WORKING, but I would still like to do some testing just to make sure
+//    NSLog(@"Q %i", _randomQuadrant);
+//    NSLog(@"XY %.2f %.2f",_randomPoint.x,_randomPoint.y);
+
+    if (_randomQuadrant == THIRD)
+    {
+//        NSLog(@"Third!");
+        _randomPoint.x += DWIDTH;
+    } else if (_randomQuadrant == SECOND)
+    {
+//        NSLog(@"Second!");
+        _randomPoint.x += WIDTH;
+    } else
+    {
+//        NSLog(@"First!");
+    }
+    return _randomPoint;
+}
 -(CGPoint)getRandomPoint
 {
-    //Algorith sometimes reaches 4294967296.00, please check
-    //The image is 40x70
-    _randomPoint = CGPointMake(arc4random() % (CONTENT_WIDTH-IMAGE_WIDTH),
-                               arc4random() % (I4IR_HEIGHT-IMAGE_HEIGHT));
+    _randomPoint = CGPointMake((arc4random() % ((WIDTH-IMAGE_WIDTH-10)*100)/100),
+                               (arc4random() % ((I4IR_HEIGHT-IMAGE_HEIGHT-10))*100)/100);
     return _randomPoint;
-    
 }
 @end

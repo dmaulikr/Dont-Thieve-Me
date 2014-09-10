@@ -11,10 +11,13 @@
 #import "GameLabelView.h"
 #import "EnemyViewController.h"
 
-int const INIT_TIME = 30;
-int const INIT_SCORE = 0;
+int const INIT_TIME = 60;
 int const END_TIME = 0;
+
+int const INIT_SCORE = 0;
 int const SCORE_PER_HIT = 1;
+
+int const GAME_CLOCK_TICK = 1;
 
 @interface GameViewController () <EnemyControllerDelegate>
 @property (nonatomic, retain) GameView *entireView;
@@ -48,46 +51,48 @@ int const SCORE_PER_HIT = 1;
     [self.view addSubview:_labelView];
     [lView release];
     
-    [self beginGameWithTime:INIT_TIME
-                       withScore:INIT_SCORE];
-    
+    //Find a way to make this a set
     EnemyViewController *enemy = [[EnemyViewController alloc] init];
     _enemy1 = enemy;
     _enemy1.delegate = self;
     [self.view addSubview:_enemy1.view];
     
-    EnemyViewController *enemy2 = [[EnemyViewController alloc] init];
-    _enemy2 = enemy2;
-    _enemy2.delegate = self;
-    [self.view addSubview:_enemy2.view];
+//    EnemyViewController *enemy2 = [[EnemyViewController alloc] init];
+//    _enemy2 = enemy2;
+//    _enemy2.delegate = self;
+//    [self.view addSubview:_enemy2.view];
+//    
+//    EnemyViewController *enemy3 = [[EnemyViewController alloc] init];
+//    _enemy3 = enemy3;
+//    _enemy3.delegate = self;
+//    [self.view addSubview:_enemy3.view];
+//    
+//    EnemyViewController *enemy4 = [[EnemyViewController alloc] init];
+//    _enemy4 = enemy4;
+//    _enemy4.delegate = self;
+//    [self.view addSubview:_enemy4.view];
     
-    EnemyViewController *enemy3 = [[EnemyViewController alloc] init];
-    _enemy3 = enemy3;
-    _enemy3.delegate = self;
-    [self.view addSubview:_enemy3.view];
     
-    EnemyViewController *enemy4 = [[EnemyViewController alloc] init];
-    _enemy4 = enemy4;
-    _enemy4.delegate = self;
-    [self.view addSubview:_enemy4.view];
+    [self beginGameWithTime:INIT_TIME
+                  withScore:INIT_SCORE];
+}
 
+-(void)gameRefresh
+{
+    [_labelView viewRefreshWithTime:_timeCurrent withScore:_scoreCurrent];
 }
 
 -(void)beginGameWithTime:(float)time withScore:(int)score
 {
     _timeCurrent = time;
     _scoreCurrent = score;
-    _gameClock = [NSTimer scheduledTimerWithTimeInterval:1
+    _entireView.userInteractionEnabled = YES;
+    _gameClock = [NSTimer scheduledTimerWithTimeInterval:GAME_CLOCK_TICK
                                                   target:self
                                                 selector:@selector(gameClockFire:)
                                                 userInfo:nil
                                                  repeats:YES];
     [self gameRefresh];
-}
-
--(void)gameRefresh
-{
-    [_labelView viewRefreshWithTime:_timeCurrent withScore:_scoreCurrent];
 }
 
 -(void)gameClockFire:(NSTimer *)timer
@@ -105,25 +110,24 @@ int const SCORE_PER_HIT = 1;
     _scoreCurrent += SCORE_PER_HIT;
     [self gameRefresh];
 }
+
 -(void)enemyWasNotDefeated
 {
-
+    //Add method here
 }
 
 -(void)endGame
 {
+    _entireView.userInteractionEnabled = NO;
+
     [_gameClock invalidate];
     _gameClock = nil;
     [_enemy1.view removeFromSuperview];
-    [_enemy2.view removeFromSuperview];
-    [_enemy3.view removeFromSuperview];
-    [_enemy4.view removeFromSuperview];
-
-    _entireView.userInteractionEnabled = NO;
     [_enemy1 release];
-    [_enemy2 release];
-    [_enemy3 release];
-    [_enemy4 release];
+//    [_enemy2.view removeFromSuperview];
+//    [_enemy3.view removeFromSuperview];
+//    [_enemy4.view removeFromSuperview];
+
 }
 
 @end
