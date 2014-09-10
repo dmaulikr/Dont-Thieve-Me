@@ -41,6 +41,20 @@ NSString *const TEXT_SCORE = @"Score: ";
         _scoreLabel = score;
         [self addSubview:_scoreLabel];
         [score release];
+        
+        labelRect = frame;
+        labelRect.origin.x /= 2 - (labelRect.size.width/4);
+        labelRect.origin.y /= 2 - (labelRect.size.height/4);
+        UILabel *gameover = [[UILabel alloc] initWithFrame:labelRect];
+        gameover.textAlignment = UITextAlignmentCenter;
+        gameover.font = [UIFont boldSystemFontOfSize:40];
+        gameover.textColor = [UIColor whiteColor];
+        gameover.text = @"Game Over";
+        gameover.alpha = 0;
+        _gameOverLabel = gameover;
+        [self addSubview:_gameOverLabel];
+        [gameover release];
+        
     }
     return self;
 }

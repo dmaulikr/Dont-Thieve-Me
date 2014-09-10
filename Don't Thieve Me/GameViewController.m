@@ -11,7 +11,7 @@
 #import "GameLabelView.h"
 #import "EnemyViewController.h"
 
-int const INIT_TIME = 60;
+int const INIT_TIME = 30;
 int const END_TIME = 0;
 
 int const INIT_SCORE = 0;
@@ -19,9 +19,17 @@ int const SCORE_PER_HIT = 1;
 
 int const GAME_CLOCK_TICK = 1;
 
+typedef enum //THIS IS WHERE I LEFT OFF
+{
+    FIRST = 0,
+    SECOND = 320,
+    THIRD = 640,
+}offsetQuadrant;
+
 @interface GameViewController () <EnemyControllerDelegate>
 @property (nonatomic, retain) GameView *entireView;
 @property (nonatomic, retain) GameLabelView *labelView;
+@property (nonatomic, assign) CGPoint currentQuadrant;
 
 @property (nonatomic, assign) float timeCurrent;
 @property (nonatomic, assign) int scoreCurrent;
@@ -103,6 +111,10 @@ int const GAME_CLOCK_TICK = 1;
     {
         [self endGame];
     }
+
+//    _currentQuadrant = self.entireView.contentOffset;
+//    NSLog(@"%.2f, %.2f",_currentQuadrant.x,_currentQuadrant.y);
+
 }
 
 -(void)enemyWasDefeated
@@ -119,6 +131,7 @@ int const GAME_CLOCK_TICK = 1;
 -(void)endGame
 {
     _entireView.userInteractionEnabled = NO;
+    _labelView.gameOverLabel.alpha = 1.0;
 
     [_gameClock invalidate];
     _gameClock = nil;

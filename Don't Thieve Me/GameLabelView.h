@@ -13,6 +13,7 @@
 @property (nonatomic, retain) UILabel *scoreLabel;
 @property (nonatomic, retain) UILabel *timeLabel;
 @property (nonatomic, retain) UILabel *highScoreLabel;
+@property (nonatomic, retain) UILabel *gameOverLabel;
 
 -(void)viewRefreshWithTime:(float)time;
 -(void)viewRefreshWithScore:(int)score;

@@ -21,8 +21,8 @@ int const IMAGE_HEIGHT = 70;
 float const LIFE_TIMER = 5;
 int const CLOCK_TICK = 1;
 
-float const APPEAR_DURATION = 0.4;
-float const DISAPPEAR_DURATION = 0.4;
+float const APPEAR_DURATION = 0.2;
+float const DISAPPEAR_DURATION = 0.2;
 float const VISIBLE = 1;
 float const NOT_VISIBLE = 0;
 
@@ -138,7 +138,7 @@ typedef enum
 -(CGPoint)getRandomPoint
 {
     _randomPoint = CGPointMake((arc4random() % ((WIDTH-IMAGE_WIDTH-10)*100)/100),
-                               (arc4random() % ((I4IR_HEIGHT-IMAGE_HEIGHT-10))*100)/100);
+                               (arc4random() % ((I4IR_HEIGHT-IMAGE_HEIGHT-40))*100)/100);
     return _randomPoint;
 }
 @end
