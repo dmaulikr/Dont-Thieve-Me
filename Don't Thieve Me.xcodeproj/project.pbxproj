@@ -130,10 +130,10 @@
 				FD1247FB19BEF140008FEFD1 /* GameLabelView.m */,
 				FD1247F719BEE9E0008FEFD1 /* GameViewController.h */,
 				FD1247F819BEE9E0008FEFD1 /* GameViewController.m */,
-				FD14109919BFE91B005BBCEB /* EnemyView.h */,
-				FD14109A19BFE91B005BBCEB /* EnemyView.m */,
 				FD14109C19BFEBCD005BBCEB /* EnemyViewController.h */,
 				FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */,
+				FD14109919BFE91B005BBCEB /* EnemyView.h */,
+				FD14109A19BFE91B005BBCEB /* EnemyView.m */,
 				FD1247D719BEE63A008FEFD1 /* Images.xcassets */,
 				FD1247CC19BEE63A008FEFD1 /* Supporting Files */,
 			);

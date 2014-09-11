@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@class  EnemyViewController;
 @protocol EnemyControllerDelegate
 @optional
 -(void)enemyWasDefeated;
 -(void)enemyWasNotDefeated;
+-(void)enemyDidAppear:(EnemyViewController *)enemy ;
 @end
 
 @interface EnemyViewController : UIViewController

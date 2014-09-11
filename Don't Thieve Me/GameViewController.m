@@ -11,7 +11,7 @@
 #import "GameLabelView.h"
 #import "EnemyViewController.h"
 
-int const INIT_TIME = 30;
+int const INIT_TIME = 300;
 int const END_TIME = 0;
 
 int const INIT_SCORE = 0;
@@ -29,7 +29,8 @@ typedef enum //THIS IS WHERE I LEFT OFF
 @interface GameViewController () <EnemyControllerDelegate>
 @property (nonatomic, retain) GameView *entireView;
 @property (nonatomic, retain) GameLabelView *labelView;
-@property (nonatomic, assign) CGPoint currentQuadrant;
+@property (nonatomic, assign) CGPoint currentPosition;
+@property (nonatomic, assign) offsetQuadrant currentQuadrant;
 
 @property (nonatomic, assign) float timeCurrent;
 @property (nonatomic, assign) int scoreCurrent;
@@ -79,8 +80,7 @@ typedef enum //THIS IS WHERE I LEFT OFF
 //    _enemy4 = enemy4;
 //    _enemy4.delegate = self;
 //    [self.view addSubview:_enemy4.view];
-    
-    
+
     [self beginGameWithTime:INIT_TIME
                   withScore:INIT_SCORE];
 }
@@ -111,10 +111,8 @@ typedef enum //THIS IS WHERE I LEFT OFF
     {
         [self endGame];
     }
-
 //    _currentQuadrant = self.entireView.contentOffset;
 //    NSLog(@"%.2f, %.2f",_currentQuadrant.x,_currentQuadrant.y);
-
 }
 
 -(void)enemyWasDefeated
@@ -127,6 +125,36 @@ typedef enum //THIS IS WHERE I LEFT OFF
 {
     //Add method here
 }
+-(void)enemyDidAppear:(EnemyViewController *)enemy
+{
+    _currentPosition = _entireView.contentOffset;
+    if(_currentPosition.x == THIRD)
+    {
+        NSLog(@"You are in Q3");
+        if(enemy.view.frame.origin.x < THIRD)
+        {
+            NSLog(@" and opponent appears left!");
+        }
+    } else if (_currentPosition.x == SECOND)
+    {
+        NSLog(@"You are in Q2");
+        if(enemy.view.frame.origin.x < SECOND)
+        {
+            NSLog(@" and opponent appears left!");
+        } else if (enemy.view.frame.origin.x > SECOND)
+        {
+            NSLog(@" and opponent appears right!");
+        }
+    } else if(_currentPosition.x == FIRST)
+    {
+        NSLog(@"You are in Q1");
+        if(enemy.view.frame.origin.x > SECOND)
+        {
+            NSLog(@" and opponent appears right!");
+        }
+    }
+}
+
 
 -(void)endGame
 {
@@ -140,7 +168,6 @@ typedef enum //THIS IS WHERE I LEFT OFF
 //    [_enemy2.view removeFromSuperview];
 //    [_enemy3.view removeFromSuperview];
 //    [_enemy4.view removeFromSuperview];
-
 }
 
 @end

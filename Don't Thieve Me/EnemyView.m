@@ -40,6 +40,13 @@ NSString *const RESET_TEXT = @"";
 //    _labelLifeTime.backgroundColor = [UIColor redColor];
     [self addSubview:_labelLifeTime];
     
+//    UILabel *spawn = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+//    spawn.textColor = [UIColor greenColor];
+//    spawn.text = @"T";
+//    _spawnPointer = spawn;
+//    [self addSubview:_spawnPointer];
+//    [spawn release];
+    
     return self;
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

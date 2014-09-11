@@ -108,6 +108,7 @@ typedef enum
                           completion:^(BOOL finished)
           {
               [self startLifeTimer];
+              [_delegate enemyDidAppear:self];
           }];
      }];
 }
@@ -141,4 +142,5 @@ typedef enum
                                (arc4random() % ((I4IR_HEIGHT-IMAGE_HEIGHT-40))*100)/100);
     return _randomPoint;
 }
+
 @end
