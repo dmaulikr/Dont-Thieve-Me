@@ -9,40 +9,48 @@
 #import "GameViewController.h"
 #import "GameView.h"
 #import "GameLabelView.h"
+#import "EnemyViewIndicator.h"
 #import "EnemyViewController.h"
 
+int const ZERO = 0;
+int const NUMBER_OF_ENEMIES = 1;
 int const INIT_TIME = 300;
 int const END_TIME = 0;
 
 int const INIT_SCORE = 0;
 int const SCORE_PER_HIT = 1;
-
 int const GAME_CLOCK_TICK = 1;
 
-typedef enum //THIS IS WHERE I LEFT OFF
+int const ARROW_IMG_WIDTH = 30;
+int const ARROW_IMG_HEIGHT = 30;
+int const ARROW_TO_SCREEN_MARGIN = 5;
+
+int const GAME_HEIGHT = 480;
+int const GAME_WIDTH = 320;
+
+float const GAME_VISIBLE = 1.0;
+float const GAME_NOT_VISIBLE = 0.0;
+
+typedef enum
 {
-    FIRST = 0,
-    SECOND = 320,
-    THIRD = 640,
-}offsetQuadrant;
+    FIRST_SCREEN = 0,
+    SECOND_SCREEN = GAME_WIDTH,
+    THIRD_SCREEN = GAME_WIDTH*2,
+}offsetScreen;
 
 @interface GameViewController () <EnemyControllerDelegate>
 @property (nonatomic, retain) GameView *entireView;
 @property (nonatomic, retain) GameLabelView *labelView;
 @property (nonatomic, assign) CGPoint currentPosition;
-@property (nonatomic, assign) offsetQuadrant currentQuadrant;
+@property (nonatomic, assign) offsetScreen currentQuadrant;
 
 @property (nonatomic, assign) float timeCurrent;
 @property (nonatomic, assign) int scoreCurrent;
 
 @property (nonatomic, retain) NSTimer *gameClock;
 
-@property (nonatomic, retain) EnemyViewController *enemy1;
-@property (nonatomic, retain) EnemyViewController *enemy2;
-@property (nonatomic, retain) EnemyViewController *enemy3;
-@property (nonatomic, retain) EnemyViewController *enemy4;
-@property (nonatomic, retain) EnemyViewController *enemy5;
-
+@property (nonatomic, retain) NSMutableArray *enemies;
+@property (nonatomic, retain) NSMutableArray *indicators;
 @end
 
 @implementation GameViewController
@@ -59,39 +67,34 @@ typedef enum //THIS IS WHERE I LEFT OFF
     _entireView.controller = _labelView;
     [self.view addSubview:_labelView];
     [lView release];
-    
-    //Find a way to make this a set
-    EnemyViewController *enemy = [[EnemyViewController alloc] init];
-    _enemy1 = enemy;
-    _enemy1.delegate = self;
-    [self.view addSubview:_enemy1.view];
-    
-//    EnemyViewController *enemy2 = [[EnemyViewController alloc] init];
-//    _enemy2 = enemy2;
-//    _enemy2.delegate = self;
-//    [self.view addSubview:_enemy2.view];
-//    
-//    EnemyViewController *enemy3 = [[EnemyViewController alloc] init];
-//    _enemy3 = enemy3;
-//    _enemy3.delegate = self;
-//    [self.view addSubview:_enemy3.view];
-//    
-//    EnemyViewController *enemy4 = [[EnemyViewController alloc] init];
-//    _enemy4 = enemy4;
-//    _enemy4.delegate = self;
-//    [self.view addSubview:_enemy4.view];
 
     [self beginGameWithTime:INIT_TIME
-                  withScore:INIT_SCORE];
+                  withScore:INIT_SCORE
+             withEnemyCount:NUMBER_OF_ENEMIES];
 }
 
--(void)gameRefresh
+#pragma Game Setup
+-(void)beginGameWithTime:(float)time withScore:(int)score withEnemyCount:(int)count
 {
-    [_labelView viewRefreshWithTime:_timeCurrent withScore:_scoreCurrent];
-}
+    self.enemies = [NSMutableArray array];
+    self.indicators = [NSMutableArray array];
+    for(int i=ZERO; i < NUMBER_OF_ENEMIES; i++)
+    {
+        EnemyViewController *enemy = [[[EnemyViewController alloc] init] autorelease];
+        enemy.delegate = self;
+        
+        EnemyViewIndicator *indicator = [[[EnemyViewIndicator alloc] init] autorelease];
+        enemy.indicator = indicator;
+        
+        self.enemies[i] = enemy;
+        self.indicators[i] = indicator;
+        [self.view addSubview:[(EnemyViewController *)self.enemies[i] view]];
+        [self.view addSubview:(EnemyViewIndicator *)self.indicators[i]];
+        
+        enemy = nil;
+        indicator = nil;
+    }
 
--(void)beginGameWithTime:(float)time withScore:(int)score
-{
     _timeCurrent = time;
     _scoreCurrent = score;
     _entireView.userInteractionEnabled = YES;
@@ -102,7 +105,10 @@ typedef enum //THIS IS WHERE I LEFT OFF
                                                  repeats:YES];
     [self gameRefresh];
 }
-
+-(void)gameRefresh
+{
+    [_labelView viewRefreshWithTime:_timeCurrent withScore:_scoreCurrent];
+}
 -(void)gameClockFire:(NSTimer *)timer
 {
     _timeCurrent--;
@@ -111,63 +117,68 @@ typedef enum //THIS IS WHERE I LEFT OFF
     {
         [self endGame];
     }
-//    _currentQuadrant = self.entireView.contentOffset;
-//    NSLog(@"%.2f, %.2f",_currentQuadrant.x,_currentQuadrant.y);
+}
+-(void)endGame
+{
+    _entireView.userInteractionEnabled = NO;
+    _labelView.gameOverLabel.alpha = GAME_VISIBLE;
+    
+    [_gameClock invalidate];
+    _gameClock = nil;
+    
+    for(int i=ZERO; i < NUMBER_OF_ENEMIES; i++)
+    {
+        [[(EnemyViewController *)self.enemies[i] view] removeFromSuperview];
+        [(EnemyViewIndicator *)self.indicators[i] removeFromSuperview];
+    }
 }
 
+#pragma Game Events
 -(void)enemyWasDefeated
 {
     _scoreCurrent += SCORE_PER_HIT;
     [self gameRefresh];
 }
-
 -(void)enemyWasNotDefeated
 {
-    //Add method here
+    
 }
 -(void)enemyDidAppear:(EnemyViewController *)enemy
 {
     _currentPosition = _entireView.contentOffset;
-    if(_currentPosition.x == THIRD)
+    if(_currentPosition.x == THIRD_SCREEN && enemy.view.frame.origin.x < THIRD_SCREEN)
     {
-        NSLog(@"You are in Q3");
-        if(enemy.view.frame.origin.x < THIRD)
-        {
-            NSLog(@" and opponent appears left!");
-        }
-    } else if (_currentPosition.x == SECOND)
+        [self indicateEnemy:enemy
+                 atPosition:_currentPosition
+              withDirection:LEFT];
+    }
+    else if (_currentPosition.x == SECOND_SCREEN && enemy.view.frame.origin.x < SECOND_SCREEN)
     {
-        NSLog(@"You are in Q2");
-        if(enemy.view.frame.origin.x < SECOND)
-        {
-            NSLog(@" and opponent appears left!");
-        } else if (enemy.view.frame.origin.x > SECOND)
-        {
-            NSLog(@" and opponent appears right!");
-        }
-    } else if(_currentPosition.x == FIRST)
+        [self indicateEnemy:enemy
+                 atPosition:_currentPosition
+              withDirection:LEFT];
+    }
+    else if (_currentPosition.x == SECOND_SCREEN && enemy.view.frame.origin.x > THIRD_SCREEN)
     {
-        NSLog(@"You are in Q1");
-        if(enemy.view.frame.origin.x > SECOND)
-        {
-            NSLog(@" and opponent appears right!");
-        }
+        [self indicateEnemy:enemy
+                 atPosition:_currentPosition
+              withDirection:RIGHT];
+    }
+    else if(_currentPosition.x == FIRST_SCREEN && enemy.view.frame.origin.x > SECOND_SCREEN)
+    {
+        [self indicateEnemy:enemy
+                 atPosition:_currentPosition
+              withDirection:RIGHT];
     }
 }
-
-
--(void)endGame
+-(void)indicateEnemy:(EnemyViewController *)enemy atPosition:(CGPoint)position withDirection:(enumImage)direction
 {
-    _entireView.userInteractionEnabled = NO;
-    _labelView.gameOverLabel.alpha = 1.0;
-
-    [_gameClock invalidate];
-    _gameClock = nil;
-    [_enemy1.view removeFromSuperview];
-    [_enemy1 release];
-//    [_enemy2.view removeFromSuperview];
-//    [_enemy3.view removeFromSuperview];
-//    [_enemy4.view removeFromSuperview];
+    position.y = enemy.view.frame.origin.y;
+    if (direction == LEFT)
+        position.x += ARROW_TO_SCREEN_MARGIN;
+    if (direction == RIGHT)
+        position.x = (position.x + GAME_WIDTH) - (ARROW_IMG_WIDTH + ARROW_TO_SCREEN_MARGIN);
+    [enemy.indicator setImageDirection:direction atPoint:position];
 }
 
 @end

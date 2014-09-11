@@ -24,6 +24,7 @@
 		FD1247FC19BEF140008FEFD1 /* GameLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1247FB19BEF140008FEFD1 /* GameLabelView.m */; };
 		FD14109B19BFE91B005BBCEB /* EnemyView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14109A19BFE91B005BBCEB /* EnemyView.m */; };
 		FD14109E19BFEBCD005BBCEB /* EnemyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */; };
+		FDA5660819C144E7003847AA /* EnemyViewIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA5660719C144E7003847AA /* EnemyViewIndicator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,8 @@
 		FD14109A19BFE91B005BBCEB /* EnemyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyView.m; sourceTree = "<group>"; };
 		FD14109C19BFEBCD005BBCEB /* EnemyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyViewController.h; sourceTree = "<group>"; };
 		FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyViewController.m; sourceTree = "<group>"; };
+		FDA5660619C144E7003847AA /* EnemyViewIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyViewIndicator.h; sourceTree = "<group>"; };
+		FDA5660719C144E7003847AA /* EnemyViewIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyViewIndicator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,12 +127,14 @@
 			children = (
 				FD1247D419BEE63A008FEFD1 /* AppDelegate.h */,
 				FD1247D519BEE63A008FEFD1 /* AppDelegate.m */,
+				FD1247F719BEE9E0008FEFD1 /* GameViewController.h */,
+				FD1247F819BEE9E0008FEFD1 /* GameViewController.m */,
 				FD1247F419BEE89C008FEFD1 /* GameView.h */,
 				FD1247F519BEE89C008FEFD1 /* GameView.m */,
 				FD1247FA19BEF140008FEFD1 /* GameLabelView.h */,
 				FD1247FB19BEF140008FEFD1 /* GameLabelView.m */,
-				FD1247F719BEE9E0008FEFD1 /* GameViewController.h */,
-				FD1247F819BEE9E0008FEFD1 /* GameViewController.m */,
+				FDA5660619C144E7003847AA /* EnemyViewIndicator.h */,
+				FDA5660719C144E7003847AA /* EnemyViewIndicator.m */,
 				FD14109C19BFEBCD005BBCEB /* EnemyViewController.h */,
 				FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */,
 				FD14109919BFE91B005BBCEB /* EnemyView.h */,
@@ -268,6 +273,7 @@
 				FD1247FC19BEF140008FEFD1 /* GameLabelView.m in Sources */,
 				FD1247F619BEE89C008FEFD1 /* GameView.m in Sources */,
 				FD1247D619BEE63A008FEFD1 /* AppDelegate.m in Sources */,
+				FDA5660819C144E7003847AA /* EnemyViewIndicator.m in Sources */,
 				FD1247D219BEE63A008FEFD1 /* main.m in Sources */,
 				FD14109B19BFE91B005BBCEB /* EnemyView.m in Sources */,
 			);

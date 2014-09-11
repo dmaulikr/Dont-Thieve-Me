@@ -7,9 +7,16 @@
 //
 
 #import "GameView.h"
-int const I4IR_WIDTH = 320;
-float const SWIPE_OBJ_DURATION = 0.3;
+
 NSString *const MAP_IMG = @"dtm_map_med";
+float const SWIPE_OBJ_DURATION = 0.3;
+
+int const I4IR_WIDTH = 320;
+int const I4IR_DWIDTH = 640;
+int const NUMBER_OF_SCREENS = 3;
+
+int const GV_ZERO = 0;
+int const GV_NONE = 0;
 
 @interface GameView()
 @property (nonatomic, assign) CGPoint currentPoint;
@@ -21,7 +28,7 @@ NSString *const MAP_IMG = @"dtm_map_med";
     self = [super initWithFrame:frame];
     if (self) {
         CGRect entireRect = frame;
-        entireRect.size.width *= 3;
+        entireRect.size.width *= NUMBER_OF_SCREENS;
         self.contentSize = entireRect.size;
         self.scrollEnabled = NO;
 
@@ -46,13 +53,13 @@ NSString *const MAP_IMG = @"dtm_map_med";
 -(void)viewRightScreen
 {
     _currentPoint = self.bounds.origin;
-    if (_currentPoint.x == I4IR_WIDTH*2)
+    if (_currentPoint.x == I4IR_DWIDTH)
     {} else
     {
         _currentPoint.x +=I4IR_WIDTH;
         [UIView animateWithDuration:SWIPE_OBJ_DURATION
-                              delay:0
-                            options:0
+                              delay:GV_NONE
+                            options:GV_NONE
                          animations:^{
                              [_controller viewScrolledRight];
                          }
@@ -64,13 +71,13 @@ NSString *const MAP_IMG = @"dtm_map_med";
 -(void)viewLeftScreen
 {
     _currentPoint = self.bounds.origin;
-    if (_currentPoint.x == 0)
+    if (_currentPoint.x == GV_ZERO)
     {} else
     {
         _currentPoint.x -= I4IR_WIDTH;
         [UIView animateWithDuration:SWIPE_OBJ_DURATION
-                              delay:0
-                            options:0
+                              delay:GV_NONE
+                            options:GV_NONE
                          animations:^{
                              [_controller viewScrolledLeft];
                          }

@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 @class  EnemyViewController;
+@class EnemyViewIndicator;
 @protocol EnemyControllerDelegate
-@optional
 -(void)enemyWasDefeated;
 -(void)enemyWasNotDefeated;
 -(void)enemyDidAppear:(EnemyViewController *)enemy ;
 @end
 
 @interface EnemyViewController : UIViewController
+@property (nonatomic, retain) NSTimer *lifeTimer;
 @property (nonatomic, assign) id delegate;
+
+@property (nonatomic, assign) id indicator;
 @end

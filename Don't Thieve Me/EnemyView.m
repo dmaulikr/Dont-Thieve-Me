@@ -9,8 +9,12 @@
 #import "EnemyView.h"
 
 NSString *const CHAR_IMAGE = @"enemy_burglar";
-
 NSString *const RESET_TEXT = @"";
+
+float const CHAR_CTR_X = 26.5;
+float const CHAR_CTR_Y = 73;
+float const CHAR_CTR_W = 10;
+float const CHAR_CTR_H = 15;
 
 @interface EnemyView()
 @property UILabel *labelLifeTime;
@@ -29,23 +33,14 @@ NSString *const RESET_TEXT = @"";
     self.image = image;
     self.userInteractionEnabled = YES;
     
-    //Still moving this around, figuring out the best place to insert the label, will replace with const when fixed
-    frame = CGRectMake(self.bounds.size.width/2,
-                       self.bounds.size.height-20,
-                       10,
-                       15);
-    
+    frame = CGRectMake(CHAR_CTR_X,
+                       CHAR_CTR_Y,
+                       CHAR_CTR_W,
+                       CHAR_CTR_H);
+
     _labelLifeTime = [[UILabel alloc] initWithFrame:frame];
     _labelLifeTime.textColor = [UIColor whiteColor];
-//    _labelLifeTime.backgroundColor = [UIColor redColor];
     [self addSubview:_labelLifeTime];
-    
-//    UILabel *spawn = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-//    spawn.textColor = [UIColor greenColor];
-//    spawn.text = @"T";
-//    _spawnPointer = spawn;
-//    [self addSubview:_spawnPointer];
-//    [spawn release];
     
     return self;
 }

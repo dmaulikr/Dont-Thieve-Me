@@ -13,7 +13,6 @@ int const CONTENT_WIDTH = 960;
 int const I4IR_HEIGHT = 568;
 int const WIDTH = 320;
 int const DWIDTH = 640;
-//int const I4IR_WIDTH = 320; //unused for now, but will be used later on
 
 int const IMAGE_WIDTH = 40;
 int const IMAGE_HEIGHT = 70;
@@ -21,10 +20,11 @@ int const IMAGE_HEIGHT = 70;
 float const LIFE_TIMER = 5;
 int const CLOCK_TICK = 1;
 
-float const APPEAR_DURATION = 0.2;
-float const DISAPPEAR_DURATION = 0.2;
+float const APPEAR_DURATION = 0.4;
+float const DISAPPEAR_DURATION = 0.4;
 float const VISIBLE = 1;
 float const NOT_VISIBLE = 0;
+int const EV_ZERO=0;
 
 int const GAME_QUADRANTS = 3;
 typedef enum
@@ -36,7 +36,6 @@ typedef enum
 
 @interface EnemyViewController ()
 @property (nonatomic, retain) EnemyView *enemyView;
-@property (nonatomic, retain) NSTimer *lifeTimer;
 @property (nonatomic, assign) float lifeTimeCurrent;
 
 @property (nonatomic, assign) GameQuadrant randomQuadrant;
@@ -70,7 +69,7 @@ typedef enum
 -(void)lifeTimerFire:(NSTimer *)timer
 {
     _lifeTimeCurrent--;
-    if (_lifeTimeCurrent == 0)
+    if (_lifeTimeCurrent == EV_ZERO)
     {
         [self expireLifeTimerWithEnemyDefeated:NO];
     } else
@@ -86,7 +85,7 @@ typedef enum
 -(void)expireLifeTimerWithEnemyDefeated:(BOOL)boolean
 {
     [_lifeTimer invalidate];
-    _lifeTimer = nil; //Should I keep nil here or just remove it? The timer restarts at the end of this method
+    _lifeTimer = nil;
     if(boolean == YES)
         [_delegate enemyWasDefeated];
     if(boolean == NO)
@@ -117,22 +116,12 @@ typedef enum
 {
     _randomQuadrant = arc4random() % GAME_QUADRANTS;
     _randomPoint = [self getRandomPoint];
-    
-//    METHOD ALREADY WORKING, but I would still like to do some testing just to make sure
-//    NSLog(@"Q %i", _randomQuadrant);
-//    NSLog(@"XY %.2f %.2f",_randomPoint.x,_randomPoint.y);
-
     if (_randomQuadrant == THIRD)
     {
-//        NSLog(@"Third!");
         _randomPoint.x += DWIDTH;
     } else if (_randomQuadrant == SECOND)
     {
-//        NSLog(@"Second!");
         _randomPoint.x += WIDTH;
-    } else
-    {
-//        NSLog(@"First!");
     }
     return _randomPoint;
 }
