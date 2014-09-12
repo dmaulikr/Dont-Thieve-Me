@@ -9,9 +9,14 @@
 #import <UIKit/UIKit.h>
 @class GameViewController;
 
+typedef enum
+{
+    SCROLL_LEFT = 0,
+    SCROLL_RIGHT = 1
+}swipeDirection;
+
 @protocol GameScrollDelegate
--(void)viewScrolledRight;
--(void)viewScrolledLeft;
+-(void)viewScrollDirection:(swipeDirection)direction;
 @end
 
 @interface GameView : UIScrollView

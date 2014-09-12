@@ -11,6 +11,7 @@
 
 NSString *const TEXT_TIMER = @"Timer: ";
 NSString *const TEXT_SCORE = @"Score: ";
+NSString *const GAME_OVER = @"GAME OVER\nScore: ";
 
 @interface GameLabelView()<GameScrollDelegate>
 @property (nonatomic, assign) CGRect currentFrame;
@@ -47,26 +48,26 @@ NSString *const TEXT_SCORE = @"Score: ";
         labelRect.origin.y /= 2 - (labelRect.size.height/4);
         UILabel *gameover = [[UILabel alloc] initWithFrame:labelRect];
         gameover.textAlignment = NSTextAlignmentCenter;
-        gameover.font = [UIFont boldSystemFontOfSize:40];
+        gameover.font = [UIFont boldSystemFontOfSize:35];
+        gameover.numberOfLines = 0;
         gameover.textColor = [UIColor whiteColor];
-        gameover.text = @"Game Over";
+        gameover.text = GAME_OVER;
         gameover.alpha = 0;
         _gameOverLabel = gameover;
+        
         [self addSubview:_gameOverLabel];
         [gameover release];
     }
     return self;
 }
 
-//Refactor these into -(void)viewscrolled:(scrollDirection)direction;
--(void)viewScrolledRight
+-(void)viewScrollDirection:(swipeDirection)direction
 {
-    _currentFrame.origin.x += self.frame.size.width;
-    self.frame = _currentFrame;
-}
--(void)viewScrolledLeft
-{
-    _currentFrame.origin.x -= self.frame.size.width;
+    if (direction == SCROLL_LEFT)
+        _currentFrame.origin.x -= self.frame.size.width;
+    if (direction == SCROLL_RIGHT)
+        _currentFrame.origin.x += self.frame.size.width;
+    
     self.frame = _currentFrame;
 }
 

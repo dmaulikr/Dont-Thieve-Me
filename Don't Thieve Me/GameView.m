@@ -61,7 +61,7 @@ int const GV_NONE = 0;
                               delay:GV_NONE
                             options:GV_NONE
                          animations:^{
-                             [_controller viewScrolledRight];
+                             [_controller viewScrollDirection:SCROLL_RIGHT];
                          }
                          completion:NULL];
         [self setContentOffset:_currentPoint
@@ -79,12 +79,11 @@ int const GV_NONE = 0;
                               delay:GV_NONE
                             options:GV_NONE
                          animations:^{
-                             [_controller viewScrolledLeft];
+                             [_controller viewScrollDirection:SCROLL_LEFT];
                          }
                          completion:NULL];
 
         [self setContentOffset:_currentPoint
                       animated:YES];
     }
-  }
-@end
+}@end

@@ -9,12 +9,14 @@
 #import "GameViewController.h"
 #import "GameView.h"
 #import "GameLabelView.h"
+#import "GameStore.h"
+
 #import "EnemyViewIndicator.h"
 #import "EnemyViewController.h"
 
 int const ZERO = 0;
-int const NUMBER_OF_ENEMIES = 1;
-int const INIT_TIME = 300;
+int const NUMBER_OF_ENEMIES = 5;
+int const INIT_TIME = 10;
 int const END_TIME = 0;
 
 int const INIT_SCORE = 0;
@@ -31,6 +33,11 @@ int const GAME_WIDTH = 320;
 float const GAME_VISIBLE = 1.0;
 float const GAME_NOT_VISIBLE = 0.0;
 
+NSString *const KEYPATH_HIGHSCORE = @"high score";
+NSString *const KEYPATH_HIGHSCORE_N_SCORES = @"SCORES";
+NSString *const KEYPATH_HIGHSCORE_1 = @"1";
+
+NSString *const LABEL_NEW_HIGH_SCORE = @"\nNew High Score!";
 typedef enum
 {
     FIRST_SCREEN = 0,
@@ -43,6 +50,8 @@ typedef enum
 @property (nonatomic, retain) GameLabelView *labelView;
 @property (nonatomic, assign) CGPoint currentPosition;
 @property (nonatomic, assign) offsetScreen currentQuadrant;
+
+@property (nonatomic, assign) NSDictionary *scores;
 
 @property (nonatomic, assign) float timeCurrent;
 @property (nonatomic, assign) int scoreCurrent;
@@ -121,16 +130,28 @@ typedef enum
 -(void)endGame
 {
     _entireView.userInteractionEnabled = NO;
-    _labelView.gameOverLabel.alpha = GAME_VISIBLE;
-    
     [_gameClock invalidate];
     _gameClock = nil;
-    
     for(int i=ZERO; i < NUMBER_OF_ENEMIES; i++)
     {
         [[(EnemyViewController *)self.enemies[i] view] removeFromSuperview];
         [(EnemyViewIndicator *)self.indicators[i] removeFromSuperview];
     }
+    //Check for high score
+    self.scores = [[[GameStore sharedStore] allGameFiles] valueForKeyPath:KEYPATH_HIGHSCORE][KEYPATH_HIGHSCORE_1];
+    int highest_score = [self.scores[KEYPATH_HIGHSCORE_N_SCORES] intValue];
+
+    NSString *stringScore = [NSString stringWithFormat:@"%i",_scoreCurrent];
+    _labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:stringScore];
+    _labelView.gameOverLabel.alpha = GAME_VISIBLE;
+
+    if(_scoreCurrent > highest_score)
+    {
+        _labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:LABEL_NEW_HIGH_SCORE];
+        [[GameStore sharedStore] setNewHighScore:_scoreCurrent];
+    }
+    
+    
 }
 
 #pragma Game Events
