@@ -18,5 +18,4 @@
 -(void)viewRefreshWithTime:(float)time;
 -(void)viewRefreshWithScore:(int)score;
 -(void)viewRefreshWithTime:(float)time withScore:(int)score;
-
 @end

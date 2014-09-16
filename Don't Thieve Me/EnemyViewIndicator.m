@@ -34,20 +34,22 @@ int const IND_NONE = 0;
     }
     return self;
 }
+
 -(void)setImageDirection:(enumImage)direction
 {
     if (direction == LEFT)
     {
-        self.image = _arrowImageLeft;
+        self.image = self.arrowImageLeft;
     } else if (direction == RIGHT)
     {
-        self.image = _arrowImageRight;
+        self.image = self.arrowImageRight;
     }
 }
+
 -(void)setImageDirection:(enumImage)direction atPoint:(CGPoint)point
 {
     [self setImageDirection:direction];
-    _currentFrame = self.frame;
+    self.currentFrame = self.frame;
     _currentFrame.origin = point;
     self.frame = _currentFrame;
     [UIView animateWithDuration:IND_APPEAR_DURATION
@@ -67,4 +69,5 @@ int const IND_NONE = 0;
                           completion:NULL];
      }];
 }
+
 @end

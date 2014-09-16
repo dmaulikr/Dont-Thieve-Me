@@ -17,7 +17,12 @@
 
 @interface EnemyViewController : UIViewController
 @property (nonatomic, retain) NSTimer *lifeTimer;
+@property (nonatomic, assign) BOOL isEnemyPermanentlyExpired;
+
 @property (nonatomic, assign) id delegate;
 
 @property (nonatomic, assign) id indicator;
+
+-(void)startLifeTimer;
+-(void)invalidateTimer;
 @end

@@ -8,7 +8,9 @@
 
 #import "GameView.h"
 
-NSString *const MAP_IMG = @"dtm_map_med";
+NSString *const MAP_IMG_I4 = @"dtm_map_med";
+NSString *const MAP_IMG_I35 =@"dtm_med480";
+
 float const SWIPE_OBJ_DURATION = 0.3;
 
 int const I4IR_WIDTH = 320;
@@ -32,10 +34,19 @@ int const GV_NONE = 0;
         self.contentSize = entireRect.size;
         self.scrollEnabled = NO;
 
-        UIImage *image = [UIImage imageNamed:MAP_IMG];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        [self addSubview:imageView];
-        [imageView release];
+        if(frame.size.height == 480)
+        {
+            UIImage *image = [UIImage imageNamed:MAP_IMG_I35];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+            [self addSubview:imageView];
+            [imageView release];
+        } else
+        {
+            UIImage *image = [UIImage imageNamed:MAP_IMG_I4];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+            [self addSubview:imageView];
+            [imageView release];
+        }
      
 #pragma mark Swipe Gesture Recognizers
         UISwipeGestureRecognizer *swipeToLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self
@@ -61,13 +72,14 @@ int const GV_NONE = 0;
                               delay:GV_NONE
                             options:GV_NONE
                          animations:^{
-                             [_controller viewScrollDirection:SCROLL_RIGHT];
+                             [self.controller viewScrollDirection:SCROLL_RIGHT];
                          }
                          completion:NULL];
         [self setContentOffset:_currentPoint
                       animated:YES];
     }
 }
+
 -(void)viewLeftScreen
 {
     _currentPoint = self.bounds.origin;
@@ -79,11 +91,12 @@ int const GV_NONE = 0;
                               delay:GV_NONE
                             options:GV_NONE
                          animations:^{
-                             [_controller viewScrollDirection:SCROLL_LEFT];
+                             [self.controller viewScrollDirection:SCROLL_LEFT];
                          }
                          completion:NULL];
 
         [self setContentOffset:_currentPoint
                       animated:YES];
     }
-}@end
+}
+@end

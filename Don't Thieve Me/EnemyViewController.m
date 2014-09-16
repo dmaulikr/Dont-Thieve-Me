@@ -11,11 +11,16 @@
 
 int const CONTENT_WIDTH = 960;
 int const I4IR_HEIGHT = 568;
+int const I35IR_HEIGHT = 480;
 int const WIDTH = 320;
 int const DWIDTH = 640;
 
 int const IMAGE_WIDTH = 40;
 int const IMAGE_HEIGHT = 70;
+int const SCREEN_BORDER = 10;
+int const GAME_LABEL_BORDER = 50;
+int const INT_HUNDRED = 100;
+float const FLOAT_HUNDRED = 100;
 
 float const LIFE_TIMER = 5;
 int const CLOCK_TICK = 1;
@@ -47,36 +52,43 @@ typedef enum
 -(void)loadView
 {
     EnemyView *view = [[EnemyView alloc] initAtPoint:[self getRandomPointInRandomQuadrant]];
-    _enemyView = view;
-    _enemyView.controller = self;
-    
-    [self setView:_enemyView];
+    self.enemyView = view;
+    self.enemyView.controller = self;
+    self.isEnemyPermanentlyExpired = NO;
+    [self setView:self.enemyView];
     [view release];
-    
-    [self startLifeTimer];
 }
+
 -(void)startLifeTimer
 {
-    _lifeTimeCurrent = LIFE_TIMER;
-    _lifeTimer = [NSTimer scheduledTimerWithTimeInterval:CLOCK_TICK
+    self.lifeTimeCurrent = LIFE_TIMER;
+    self.lifeTimer = [NSTimer scheduledTimerWithTimeInterval:CLOCK_TICK
                                                   target:self
                                                 selector:@selector(lifeTimerFire:)
                                                 userInfo:nil
                                                  repeats:YES];
-    [_enemyView viewRefreshWithTime:_lifeTimeCurrent];
+    [self.enemyView viewRefreshWithTime:self.lifeTimeCurrent];
 }
 
 -(void)lifeTimerFire:(NSTimer *)timer
 {
-    _lifeTimeCurrent--;
-    if (_lifeTimeCurrent == EV_ZERO)
+    self.lifeTimeCurrent--;
+    if(_isEnemyPermanentlyExpired == YES)
     {
-        [self expireLifeTimerWithEnemyDefeated:NO];
+        [self.lifeTimer invalidate];
+        self.lifeTimer = nil;
     } else
     {
-        [_enemyView viewRefreshWithTime:_lifeTimeCurrent];
+        if (self.lifeTimeCurrent == EV_ZERO)
+        {
+            [self expireLifeTimerWithEnemyDefeated:NO];
+        } else
+        {
+            [self.enemyView viewRefreshWithTime:self.lifeTimeCurrent];
+        }
     }
 }
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self expireLifeTimerWithEnemyDefeated:YES];
@@ -84,34 +96,47 @@ typedef enum
 
 -(void)expireLifeTimerWithEnemyDefeated:(BOOL)boolean
 {
-    [_lifeTimer invalidate];
-    _lifeTimer = nil;
-    if(boolean == YES)
-        [_delegate enemyWasDefeated];
-    if(boolean == NO)
-        [_delegate enemyWasNotDefeated];
+    [self.lifeTimer invalidate];
+    self.lifeTimer = nil;
     
-    [UIView animateWithDuration:APPEAR_DURATION
-                     animations:^{
-                         _enemyView.alpha = NOT_VISIBLE;
-                     }
-                     completion:^(BOOL finished)
-     {
-         _currentFrame = _enemyView.frame;
-         _currentFrame.origin = [self getRandomPointInRandomQuadrant];
-         _enemyView.frame = _currentFrame;
-         [UIView animateWithDuration:DISAPPEAR_DURATION
-                          animations:^{
-                              _enemyView.alpha = VISIBLE;
-                          }
-                          completion:^(BOOL finished)
-          {
-              [self startLifeTimer];
-              [_delegate enemyDidAppear:self];
-          }];
-     }];
+        if(boolean == YES)
+        {
+            [self.delegate enemyWasDefeated];
+            self.enemyView.image = [UIImage imageNamed:@"enemy_caught"];
+        }
+        if(boolean == NO)
+            [self.delegate enemyWasNotDefeated];
+        
+        [UIView animateWithDuration:APPEAR_DURATION
+                         animations:^{
+                             self.enemyView.alpha = NOT_VISIBLE;
+                         }
+                         completion:^(BOOL finished)
+         {
+             if(boolean == YES)
+                 self.enemyView.image = [UIImage imageNamed:@"enemy_burglar"];
+             self.currentFrame = _enemyView.frame;
+             _currentFrame.origin = [self getRandomPointInRandomQuadrant];
+             self.enemyView.frame = _currentFrame;
+             [UIView animateWithDuration:DISAPPEAR_DURATION
+                              animations:^{
+                                  self.enemyView.alpha = VISIBLE;
+                              }
+                              completion:^(BOOL finished)
+              {
+                  if(_isEnemyPermanentlyExpired == NO)
+                  {
+                      [self startLifeTimer];
+                      [self.delegate enemyDidAppear:self];
+                  } else
+                  {
+                      [self.lifeTimer invalidate];
+                      self.lifeTimer = nil;
+                  }
+              }];
+         }];
+    
 }
-
 -(CGPoint)getRandomPointInRandomQuadrant
 {
     _randomQuadrant = arc4random() % GAME_QUADRANTS;
@@ -125,11 +150,16 @@ typedef enum
     }
     return _randomPoint;
 }
+
 -(CGPoint)getRandomPoint
 {
-    _randomPoint = CGPointMake((arc4random() % ((WIDTH-IMAGE_WIDTH-10)*100)/100),
-                               (arc4random() % ((I4IR_HEIGHT-IMAGE_HEIGHT-40))*100)/100);
+    _randomPoint = CGPointMake((arc4random() % ((WIDTH - IMAGE_WIDTH - SCREEN_BORDER)*INT_HUNDRED)/FLOAT_HUNDRED),
+                               (arc4random() % ((I35IR_HEIGHT-IMAGE_HEIGHT-GAME_LABEL_BORDER))*INT_HUNDRED)/FLOAT_HUNDRED);
     return _randomPoint;
 }
-
+-(void)invalidateTimer
+{
+    [self.lifeTimer invalidate];
+    self.lifeTimer = nil;
+}
 @end

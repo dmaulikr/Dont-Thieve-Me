@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "GameViewController.h"
+#import "GameStore.h"
 
 @implementation AppDelegate
 
@@ -15,7 +16,7 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    
+
     GameViewController *gvc = [[[GameViewController alloc] init] autorelease];
     self.window.rootViewController = gvc;
     
