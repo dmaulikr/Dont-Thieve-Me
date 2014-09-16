@@ -20,6 +20,11 @@ int const NUMBER_OF_SCREENS = 3;
 int const GV_ZERO = 0;
 int const GV_NONE = 0;
 
+typedef enum {
+    ANIMATE_LEFT = 0,
+    ANIMATE_RIGHT = 1
+}animateDirection;
+
 @interface GameView()
 @property (nonatomic, assign) CGPoint currentPoint;
 @end
@@ -68,15 +73,7 @@ int const GV_NONE = 0;
     {} else
     {
         _currentPoint.x +=I4IR_WIDTH;
-        [UIView animateWithDuration:SWIPE_OBJ_DURATION
-                              delay:GV_NONE
-                            options:GV_NONE
-                         animations:^{
-                             [self.controller viewScrollDirection:SCROLL_RIGHT];
-                         }
-                         completion:NULL];
-        [self setContentOffset:_currentPoint
-                      animated:YES];
+        [self animateScreenWithDirection:ANIMATE_RIGHT];
     }
 }
 
@@ -87,16 +84,23 @@ int const GV_NONE = 0;
     {} else
     {
         _currentPoint.x -= I4IR_WIDTH;
-        [UIView animateWithDuration:SWIPE_OBJ_DURATION
-                              delay:GV_NONE
-                            options:GV_NONE
-                         animations:^{
-                             [self.controller viewScrollDirection:SCROLL_LEFT];
-                         }
-                         completion:NULL];
-
-        [self setContentOffset:_currentPoint
-                      animated:YES];
+        [self animateScreenWithDirection:ANIMATE_LEFT];
     }
+}
+
+-(void)animateScreenWithDirection:(animateDirection)direction
+{
+    [UIView animateWithDuration:SWIPE_OBJ_DURATION
+                          delay:GV_NONE
+                        options:GV_NONE
+                     animations:^{
+                         if(direction == ANIMATE_LEFT)
+                             [self.controller viewScrollDirection:SCROLL_LEFT];
+                         if(direction == ANIMATE_RIGHT)
+                             [self.controller viewScrollDirection:SCROLL_RIGHT];
+                     }
+                     completion:NULL];
+    [self setContentOffset:_currentPoint
+                  animated:YES];
 }
 @end

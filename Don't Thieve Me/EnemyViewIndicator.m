@@ -25,9 +25,9 @@ int const IND_NONE = 0;
 
 - (id)initWithFrame:(CGRect)frame
 {
-    _arrowImageLeft = [UIImage imageNamed:imageLeft];
-    _arrowImageRight = [UIImage imageNamed:imageRight];
-    _currentFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, _arrowImageLeft.size.width, _arrowImageLeft.size.height);
+    self.arrowImageLeft = [UIImage imageNamed:imageLeft];
+    self.arrowImageRight = [UIImage imageNamed:imageRight];
+    self.currentFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, _arrowImageLeft.size.width, _arrowImageLeft.size.height);
     self = [super initWithFrame:_currentFrame];
     if (self) {
         self.alpha = IND_NOT_VISIBLE;

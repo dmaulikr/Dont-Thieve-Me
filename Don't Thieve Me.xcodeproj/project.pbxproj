@@ -27,6 +27,9 @@
 		FD39905619C278F000C1206D /* GameStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FD39905519C278F000C1206D /* GameStore.m */; };
 		FD39905819C27AB200C1206D /* game.json in Resources */ = {isa = PBXBuildFile; fileRef = FD39905719C27AB200C1206D /* game.json */; };
 		FDA5660819C144E7003847AA /* EnemyViewIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA5660719C144E7003847AA /* EnemyViewIndicator.m */; };
+		FDA93E9019C7D5BC00288D9F /* scores.json in Resources */ = {isa = PBXBuildFile; fileRef = FDA93E8F19C7D5BC00288D9F /* scores.json */; };
+		FDA93E9419C7DE9E00288D9F /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA93E9219C7DE9E00288D9F /* MainMenuViewController.m */; };
+		FDA93E9519C7DE9E00288D9F /* MainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDA93E9319C7DE9E00288D9F /* MainMenuViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +74,10 @@
 		FD39905719C27AB200C1206D /* game.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = game.json; sourceTree = "<group>"; };
 		FDA5660619C144E7003847AA /* EnemyViewIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyViewIndicator.h; sourceTree = "<group>"; };
 		FDA5660719C144E7003847AA /* EnemyViewIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyViewIndicator.m; sourceTree = "<group>"; };
+		FDA93E8F19C7D5BC00288D9F /* scores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = scores.json; sourceTree = "<group>"; };
+		FDA93E9119C7DE9E00288D9F /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
+		FDA93E9219C7DE9E00288D9F /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
+		FDA93E9319C7DE9E00288D9F /* MainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,7 +179,11 @@
 		FD3FC56B19C1A02500F41AA3 /* Game Assets */ = {
 			isa = PBXGroup;
 			children = (
+				FDA93E8F19C7D5BC00288D9F /* scores.json */,
 				FD39905719C27AB200C1206D /* game.json */,
+				FDA93E9119C7DE9E00288D9F /* MainMenuViewController.h */,
+				FDA93E9219C7DE9E00288D9F /* MainMenuViewController.m */,
+				FDA93E9319C7DE9E00288D9F /* MainMenuViewController.xib */,
 				FD1247F719BEE9E0008FEFD1 /* GameViewController.h */,
 				FD1247F819BEE9E0008FEFD1 /* GameViewController.m */,
 				FD1247F419BEE89C008FEFD1 /* GameView.h */,
@@ -274,6 +285,8 @@
 			files = (
 				FD1247D019BEE63A008FEFD1 /* InfoPlist.strings in Resources */,
 				FD39905819C27AB200C1206D /* game.json in Resources */,
+				FDA93E9019C7D5BC00288D9F /* scores.json in Resources */,
+				FDA93E9519C7DE9E00288D9F /* MainMenuViewController.xib in Resources */,
 				FD1247D819BEE63A008FEFD1 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,6 +310,7 @@
 				FD14109E19BFEBCD005BBCEB /* EnemyViewController.m in Sources */,
 				FD1247FC19BEF140008FEFD1 /* GameLabelView.m in Sources */,
 				FD1247F619BEE89C008FEFD1 /* GameView.m in Sources */,
+				FDA93E9419C7DE9E00288D9F /* MainMenuViewController.m in Sources */,
 				FD1247D619BEE63A008FEFD1 /* AppDelegate.m in Sources */,
 				FDA5660819C144E7003847AA /* EnemyViewIndicator.m in Sources */,
 				FD1247D219BEE63A008FEFD1 /* main.m in Sources */,

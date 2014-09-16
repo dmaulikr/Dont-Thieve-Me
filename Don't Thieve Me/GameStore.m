@@ -8,9 +8,8 @@
 
 #import "GameStore.h"
 
-
-NSString *const GAMESTORE_FILEPATH = @"game.json";
-NSString *const PATH_FOR_RESOURCE = @"game";
+NSString *const GAMESTORE_FILEPATH = @"scores.json";
+NSString *const PATH_FOR_RESOURCE = @"scores";
 NSString *const JSON_TYPE = @"json";
 
 NSString *const GPATH_HS = @"high score";
@@ -26,6 +25,7 @@ int const FIRST_OBJECT = 0;
 @property (nonatomic, assign) NSMutableDictionary *privateGameFiles;
 @property (nonatomic, assign) NSString *filePath;
 @property (nonatomic, assign) BOOL *fileRetrieved;
+
 @property (nonatomic, assign) NSDictionary *highScoreDictionary;
 @property (nonatomic, assign) NSString *convertedInteger;
 @end
@@ -53,6 +53,7 @@ int const FIRST_OBJECT = 0;
         
         //CHECK IF THERE IS AN EXISTING SANDBOX FILE
         self.privateGameFiles = [NSMutableDictionary dictionaryWithContentsOfFile:self.filePath];
+        
         if(!self.privateGameFiles)
         {
             //NO SANDBOX FILE. CREATE ONE FROM TEMPLATE
@@ -63,7 +64,6 @@ int const FIRST_OBJECT = 0;
                                                                  options:kNilOptions
                                                                    error:nil];
             //WRITE TO SAND BOX
-//            [self writeToSandBox:json];
             [[NSString stringWithFormat:@"%@",json] writeToFile:self.filePath
                                                                       atomically:YES
                                                                         encoding:NSUTF8StringEncoding
@@ -86,47 +86,17 @@ int const FIRST_OBJECT = 0;
     return sharedStore;
 }
 
--(NSDictionary *)allGameFiles
+-(int)getHighScoreIntValue
 {
-    return _privateGameFiles;
+    return [[_privateGameFiles valueForKey:@"high score"] intValue];
 }
 
-//-(void)writeToSandBox:(NSDictionary *)dictionary
-//{
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-//                                                         NSUserDomainMask,
-//                                                         YES);
-//    
-//    self.filePath = [paths objectAtIndex:FIRST_OBJECT];
-//    self.filePath = [self.filePath stringByAppendingPathComponent:GAMESTORE_FILEPATH];
-//
-//    [[NSString stringWithFormat:@"%@",dictionary] writeToFile:self.filePath
-//                 atomically:YES
-//                   encoding:NSUTF8StringEncoding
-//                      error:nil];
-//}
-
--(void)setNewHighScore:(int)score
+-(void)storeHighScoreWithIntValue:(int)score
 {
-//    _highScoreDictionary = [_privateGameFiles valueForKeyPath:@"high score"][@"1"];
-    self.convertedInteger = [NSString stringWithFormat:@"%i",score];
-    [GameStore sharedStore];
-     NSLog(@"1: %@",_privateGameFiles);
-    [_privateGameFiles[@"high score"][@"1"] setValue:self.convertedInteger
-                                forKey:GPATH_HS_1_SCORE];
-    NSLog(@"2: %@",_privateGameFiles);
-//    [self writeToSandBox:self.privateGameFiles];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                         NSUserDomainMask,
-                                                         YES);
-    
-    self.filePath = [paths objectAtIndex:FIRST_OBJECT];
-    self.filePath = [self.filePath stringByAppendingPathComponent:GAMESTORE_FILEPATH];
-    
-    [[NSString stringWithFormat:@"%@",self.privateGameFiles] writeToFile:self.filePath
-                                                   atomically:YES
-                                                     encoding:NSUTF8StringEncoding
-                                                        error:nil];
+    NSLog(@"Begin HS-Storing");
+    [_privateGameFiles setObject:[NSNumber numberWithInt:score]
+                         forKey:@"high score"];
+    NSLog(@"%@",_privateGameFiles);
+    NSLog(@"End HS_Storing");
 }
 @end

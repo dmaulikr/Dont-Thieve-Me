@@ -49,7 +49,7 @@ typedef enum
 @end
 
 @implementation EnemyViewController
--(void)loadView
+-(void)viewDidLoad
 {
     EnemyView *view = [[EnemyView alloc] initAtPoint:[self getRandomPointInRandomQuadrant]];
     self.enemyView = view;
@@ -102,7 +102,7 @@ typedef enum
         if(boolean == YES)
         {
             [self.delegate enemyWasDefeated];
-            self.enemyView.image = [UIImage imageNamed:@"enemy_caught"];
+            self.enemyView.image = _enemyView.caught;
         }
         if(boolean == NO)
             [self.delegate enemyWasNotDefeated];
@@ -114,7 +114,7 @@ typedef enum
                          completion:^(BOOL finished)
          {
              if(boolean == YES)
-                 self.enemyView.image = [UIImage imageNamed:@"enemy_burglar"];
+                 self.enemyView.image = _enemyView.normal;
              self.currentFrame = _enemyView.frame;
              _currentFrame.origin = [self getRandomPointInRandomQuadrant];
              self.enemyView.frame = _currentFrame;
@@ -137,6 +137,7 @@ typedef enum
          }];
     
 }
+
 -(CGPoint)getRandomPointInRandomQuadrant
 {
     _randomQuadrant = arc4random() % GAME_QUADRANTS;
@@ -161,5 +162,10 @@ typedef enum
 {
     [self.lifeTimer invalidate];
     self.lifeTimer = nil;
+}
+
+-(void)dealloc
+{
+    [super dealloc];
 }
 @end

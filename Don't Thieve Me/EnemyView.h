@@ -10,7 +10,8 @@
 
 @interface EnemyView : UIImageView
 @property (nonatomic, assign) id controller;
-
+@property (nonatomic, assign) UIImage *caught;
+@property (nonatomic, assign) UIImage *normal;
 
 -(id)initAtPoint:(CGPoint)point;
 -(void)viewReset;

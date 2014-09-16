@@ -3,11 +3,7 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "enemy_caught.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x"
+      "filename" : "dtm_main.png"
     }
   ],
   "info" : {

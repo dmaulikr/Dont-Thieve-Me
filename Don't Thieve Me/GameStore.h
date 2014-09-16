@@ -10,6 +10,6 @@
 
 @interface GameStore : NSObject
 +(id)sharedStore;
--(NSDictionary *)allGameFiles;
--(void)setNewHighScore:(int)score;
+-(int)getHighScoreIntValue;
+-(void)storeHighScoreWithIntValue:(int)score;
 @end

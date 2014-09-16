@@ -18,20 +18,24 @@ float const CHAR_CTR_W = 10;
 float const CHAR_CTR_H = 15;
 
 @interface EnemyView()
-@property UILabel *labelLifeTime;
+@property (nonatomic, assign) UILabel *labelLifeTime;
 @end
 
 @implementation EnemyView
 -(id)initAtPoint:(CGPoint)point
 {
     UIImage *image = [UIImage imageNamed:CHAR_IMAGE];
+    self.normal = image;
+    image = [UIImage imageNamed:CHAR_IMAGE_C];
+    self.caught = image;
+    
     CGRect frame = CGRectMake(point.x,
                               point.y,
                               image.size.width,
                               image.size.height);
     
     self= [super initWithFrame:frame];
-    self.image = image;
+    self.image = _normal;
     self.userInteractionEnabled = YES;
     
     frame = CGRectMake(CHAR_CTR_X,
@@ -42,7 +46,7 @@ float const CHAR_CTR_H = 15;
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     self.labelLifeTime = label;
     self.labelLifeTime.textColor = [UIColor whiteColor];
-    [self addSubview:_labelLifeTime];
+    [self addSubview:self.labelLifeTime];
     [label release];
     return self;
 }

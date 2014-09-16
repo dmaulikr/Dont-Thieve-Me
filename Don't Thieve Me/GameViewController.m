@@ -17,12 +17,10 @@
 
 int const ZERO = 0;
 int const NUMBER_OF_ENEMIES = 5;
-int const INIT_TIME = 30;
+int const INIT_TIME = 6;
 int const END_TIME = 0;
-
 int const INIT_SCORE = 0;
-int const SCORE_PER_HIT = 5
-;
+int const SCORE_PER_HIT = 1;
 int const GAME_CLOCK_TICK = 1;
 
 int const ARROW_IMG_WIDTH = 30;
@@ -31,16 +29,12 @@ int const ARROW_TO_SCREEN_MARGIN = 5;
 
 int const GAME_HEIGHT = 480;
 int const GAME_WIDTH = 320;
-
 float const GAME_VISIBLE = 1.0;
 float const GAME_NOT_VISIBLE = 0.0;
 
-NSString *const KEYPATH_HIGHSCORE = @"high score";
-NSString *const KEYPATH_HIGHSCORE_N_SCORES = @"SCORE";
-NSString *const KEYPATH_HIGHSCORE_1 = @"1";
-
 NSString *const LABEL_NEW_HIGH_SCORE = @"\nNew High Score!";
 NSString *const LABEL_HIGH_SCORE = @"\nHigh Score: ";
+NSString *const LABEL_GAME_OVER = @"GAME OVER\nScore: ";
 
 typedef enum
 {
@@ -49,28 +43,31 @@ typedef enum
     SCREEN_3 = GAME_WIDTH*2,
 }offsetScreen;
 
+NSString *const KEYPATH_HIGHSCORE = @"high score";
+NSString *const KEYPATH_HIGHSCORE_N_SCORES = @"SCORE";
+NSString *const KEYPATH_HIGHSCORE_1 = @"1";
+
 @interface GameViewController () <EnemyControllerDelegate>
 @property (nonatomic, retain) GameView *entireView;
 @property (nonatomic, retain) GameLabelView *labelView;
 @property (nonatomic, assign) CGPoint currentPosition;
 @property (nonatomic, assign) offsetScreen currentQuadrant;
 
-@property (nonatomic, assign) NSDictionary *scores;
-
 @property (nonatomic, assign) float timeCurrent;
 @property (nonatomic, assign) int scoreCurrent;
-@property (nonatomic, assign) int highScore;
+@property (nonatomic, assign) BOOL isGameOngoing;
 
 @property (nonatomic, retain) NSTimer *gameClock;
 
 @property (nonatomic, retain) NSMutableArray *enemies;
 @property (nonatomic, retain) NSMutableArray *indicators;
 
-@property (nonatomic, retain) UILongPressGestureRecognizer *gr; //For debugging only
+@property (nonatomic, retain) UILongPressGestureRecognizer *pressGesture;
+
 @end
 
 @implementation GameViewController
--(void)loadView
+-(void)viewDidLoad
 {
     CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
     GameView *view = [[GameView alloc] initWithFrame:applicationFrame];
@@ -83,15 +80,29 @@ typedef enum
     self.entireView.controller = self.labelView;
     [self.view addSubview:self.labelView];
     [lView release];
+    
+    self.pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                            action:@selector(pressedPlayAgain)];
+    
+    self.highScore = [[GameStore sharedStore] getHighScoreIntValue];
+}
 
-    [self beginGameWithTime:INIT_TIME
-                  withScore:INIT_SCORE
-             withEnemyCount:NUMBER_OF_ENEMIES];
+-(void)viewWillAppear:(BOOL)animated
+{
+    if(!_isGameOngoing)
+    {
+        [self beginGameWithTime:INIT_TIME
+                      withScore:INIT_SCORE
+                 withEnemyCount:NUMBER_OF_ENEMIES];
+    }
 }
 
 #pragma Game Setup
 -(void)beginGameWithTime:(float)time withScore:(int)score withEnemyCount:(int)count
 {
+    self.labelView.gameOverLabel.text = LABEL_GAME_OVER;
+    self.labelView.gameOverLabel.alpha = GAME_NOT_VISIBLE;
+
     if(!self.enemies)
     {
         self.enemies = [NSMutableArray array];
@@ -111,11 +122,6 @@ typedef enum
         self.enemies[i] = enemy;
         self.indicators[i] = indicator;
         
-        
-        //FOR DEBUGGING ONLY
-        self.labelView.gameOverLabel.alpha = GAME_NOT_VISIBLE;
-        self.labelView.gameOverLabel.text = @"GAME OVER\nScore: ";
-        
         [self.view addSubview:[(EnemyViewController *)self.enemies[i] view]];
         [self.view addSubview:(EnemyViewIndicator *)self.indicators[i]];
         [enemy startLifeTimer];
@@ -133,6 +139,10 @@ typedef enum
                                                 userInfo:nil
                                                  repeats:YES];
     self.entireView.userInteractionEnabled = YES;
+    self.isGameOngoing = YES;
+    _currentPosition.x = ZERO;
+    self.entireView.contentOffset = _currentPosition;
+    
     [self gameRefresh];
 }
 
@@ -151,9 +161,9 @@ typedef enum
     }
 }
 
+
 -(void)endGame
 {
-//    self.entireView.userInteractionEnabled = NO;
     [self.gameClock invalidate];
     self.gameClock = nil;
     for(int i=ZERO; i<NUMBER_OF_ENEMIES; i++)
@@ -164,57 +174,51 @@ typedef enum
     {
         UIView *lastEnemyView = [self.enemies[i] view];
         [lastEnemyView removeFromSuperview];
+        lastEnemyView = nil;
         UIView *lastIndicatorView = self.indicators[i];
         [lastIndicatorView removeFromSuperview];
+        lastIndicatorView = nil;
     }
     [self.enemies removeAllObjects];
     [self.indicators removeAllObjects];
-
-    [self checkForHighScore];
     
-    //FOR DEBUGGING ONLY
-    self.gr = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                     action:@selector(longpress)];
-    [self.entireView addGestureRecognizer:self.gr];
-}
--(void)longpress
-{
-    [self beginGameWithTime:INIT_TIME
-                  withScore:INIT_SCORE
-             withEnemyCount:NUMBER_OF_ENEMIES];
-    [self.entireView removeGestureRecognizer:self.gr];
-}
-
--(void)checkForHighScore
-{
-    if(!self.scores)
-    {
-        NSLog(@"SCORES");
-        self.scores = [[[GameStore sharedStore] allGameFiles] valueForKeyPath:KEYPATH_HIGHSCORE][KEYPATH_HIGHSCORE_1];
-    }
-    if(!self.highScore)
-    {
-        NSLog(@"HIGHSCORE");
-        self.highScore = [self.scores[KEYPATH_HIGHSCORE_N_SCORES] intValue];
-    }
-    
-    NSLog(@"STRINGSCORE");
-    NSString *stringScore = [NSString stringWithFormat:@"%i",_scoreCurrent];
-    self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:stringScore];
-    self.labelView.gameOverLabel.alpha = GAME_VISIBLE;
-    
-    NSLog(@"IFSCORE");
     if(_scoreCurrent > _highScore)
     {
-        self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:LABEL_NEW_HIGH_SCORE];
-        [[GameStore sharedStore] setNewHighScore:_scoreCurrent];
+        [self scoreRefreshWithNewHighScore:YES];
     } else
     {
-        stringScore = [NSString stringWithFormat:@"%i",_highScore];
+        [self scoreRefreshWithNewHighScore:NO];
+    }
+    
+    [self.entireView addGestureRecognizer:self.pressGesture];
+}
+
+-(void)scoreRefreshWithNewHighScore:(BOOL)boolean
+{
+    NSString *stringScore = [NSString stringWithFormat:@"%i",_scoreCurrent];
+    self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:stringScore];
+    
+    if(boolean)
+    {
+        self.highScore = _scoreCurrent;
+        self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:LABEL_NEW_HIGH_SCORE];
+        
+    } else
+    {
         self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:LABEL_HIGH_SCORE];
+        stringScore = [NSString stringWithFormat:@"%i",_highScore];
         self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:stringScore];
     }
+    
+    self.labelView.gameOverLabel.alpha = GAME_VISIBLE;
 }
+
+-(void)pressedPlayAgain
+{
+    self.isGameOngoing = NO;
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
 #pragma Game Events
 -(void)enemyWasDefeated
 {
