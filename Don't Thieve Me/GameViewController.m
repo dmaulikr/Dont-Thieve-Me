@@ -9,7 +9,6 @@
 #import "GameViewController.h"
 #import "GameView.h"
 #import "GameLabelView.h"
-#import "GameStore.h"
 
 #import "EnemyView.h"
 #import "EnemyViewIndicator.h"
@@ -46,6 +45,11 @@ typedef enum
 NSString *const KEYPATH_HIGHSCORE = @"high score";
 NSString *const KEYPATH_HIGHSCORE_N_SCORES = @"SCORE";
 NSString *const KEYPATH_HIGHSCORE_1 = @"1";
+
+NSString *const GAMESTORE_FILEPATH = @"scores.json";
+NSString *const PATH_FOR_RESOURCE = @"scores";
+NSString *const JSON_TYPE = @"json";
+int const FIRST_OBJECT = 0;
 
 @interface GameViewController () <EnemyControllerDelegate>
 @property (nonatomic, retain) GameView *entireView;
@@ -84,7 +88,8 @@ NSString *const KEYPATH_HIGHSCORE_1 = @"1";
     self.pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
                                                             action:@selector(pressedPlayAgain)];
     
-    self.highScore = [[GameStore sharedStore] getHighScoreIntValue];
+    [self readFileFromSandBox];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -202,7 +207,7 @@ NSString *const KEYPATH_HIGHSCORE_1 = @"1";
     {
         self.highScore = _scoreCurrent;
         self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:LABEL_NEW_HIGH_SCORE];
-        
+        [self writeFileToSandBox];
     } else
     {
         self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:LABEL_HIGH_SCORE];
@@ -261,6 +266,32 @@ NSString *const KEYPATH_HIGHSCORE_1 = @"1";
     if (direction == RIGHT)
         position.x = (position.x + GAME_WIDTH) - (ARROW_IMG_WIDTH + ARROW_TO_SCREEN_MARGIN);
     [enemy.indicator setImageDirection:direction atPoint:position];
+}
+
+-(void)readFileFromSandBox
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                         NSUserDomainMask,
+                                                         YES);
+    NSString *filePath = [paths objectAtIndex:FIRST_OBJECT];
+    filePath = [filePath stringByAppendingPathComponent:GAMESTORE_FILEPATH];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    self.highScore = [[dictionary valueForKey:@"high score"] intValue];
+}
+-(void)writeFileToSandBox
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                         NSUserDomainMask,
+                                                         YES);
+    NSString *filePath = [paths objectAtIndex:FIRST_OBJECT];
+    filePath = [filePath stringByAppendingPathComponent:GAMESTORE_FILEPATH];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:self.highScore]
+                                                                         forKey:@"high score"];
+    [[NSString stringWithFormat:@"%@",dictionary] writeToFile:filePath
+                                                   atomically:YES
+                                                     encoding:NSUTF8StringEncoding
+                                                        error:nil];
+    
 }
 
 @end

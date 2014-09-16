@@ -24,7 +24,6 @@
 		FD1247FC19BEF140008FEFD1 /* GameLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1247FB19BEF140008FEFD1 /* GameLabelView.m */; };
 		FD14109B19BFE91B005BBCEB /* EnemyView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14109A19BFE91B005BBCEB /* EnemyView.m */; };
 		FD14109E19BFEBCD005BBCEB /* EnemyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */; };
-		FD39905619C278F000C1206D /* GameStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FD39905519C278F000C1206D /* GameStore.m */; };
 		FD39905819C27AB200C1206D /* game.json in Resources */ = {isa = PBXBuildFile; fileRef = FD39905719C27AB200C1206D /* game.json */; };
 		FDA5660819C144E7003847AA /* EnemyViewIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA5660719C144E7003847AA /* EnemyViewIndicator.m */; };
 		FDA93E9019C7D5BC00288D9F /* scores.json in Resources */ = {isa = PBXBuildFile; fileRef = FDA93E8F19C7D5BC00288D9F /* scores.json */; };
@@ -69,8 +68,6 @@
 		FD14109A19BFE91B005BBCEB /* EnemyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyView.m; sourceTree = "<group>"; };
 		FD14109C19BFEBCD005BBCEB /* EnemyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyViewController.h; sourceTree = "<group>"; };
 		FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyViewController.m; sourceTree = "<group>"; };
-		FD39905419C278F000C1206D /* GameStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStore.h; sourceTree = "<group>"; };
-		FD39905519C278F000C1206D /* GameStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameStore.m; sourceTree = "<group>"; };
 		FD39905719C27AB200C1206D /* game.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = game.json; sourceTree = "<group>"; };
 		FDA5660619C144E7003847AA /* EnemyViewIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyViewIndicator.h; sourceTree = "<group>"; };
 		FDA5660719C144E7003847AA /* EnemyViewIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyViewIndicator.m; sourceTree = "<group>"; };
@@ -190,8 +187,6 @@
 				FD1247F519BEE89C008FEFD1 /* GameView.m */,
 				FD1247FA19BEF140008FEFD1 /* GameLabelView.h */,
 				FD1247FB19BEF140008FEFD1 /* GameLabelView.m */,
-				FD39905419C278F000C1206D /* GameStore.h */,
-				FD39905519C278F000C1206D /* GameStore.m */,
 			);
 			name = "Game Assets";
 			sourceTree = "<group>";
@@ -314,7 +309,6 @@
 				FD1247D619BEE63A008FEFD1 /* AppDelegate.m in Sources */,
 				FDA5660819C144E7003847AA /* EnemyViewIndicator.m in Sources */,
 				FD1247D219BEE63A008FEFD1 /* main.m in Sources */,
-				FD39905619C278F000C1206D /* GameStore.m in Sources */,
 				FD14109B19BFE91B005BBCEB /* EnemyView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
