@@ -16,7 +16,7 @@
 
 int const ZERO = 0;
 int const NUMBER_OF_ENEMIES = 5;
-int const INIT_TIME = 6;
+int const INIT_TIME = 30;
 int const END_TIME = 0;
 int const INIT_SCORE = 0;
 int const SCORE_PER_HIT = 1;
