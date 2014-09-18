@@ -16,7 +16,7 @@ typedef enum
 }swipeDirection;
 
 @protocol GameScrollDelegate
--(void)viewScrollDirection:(swipeDirection)direction;
+-(void)scrollScreenInDirection:(swipeDirection)direction;
 @end
 
 @interface GameView : UIScrollView

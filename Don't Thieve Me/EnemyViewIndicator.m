@@ -25,11 +25,10 @@ int const IND_NONE = 0;
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self.arrowImageLeft = [UIImage imageNamed:imageLeft];
-    self.arrowImageRight = [UIImage imageNamed:imageRight];
-    self.currentFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, _arrowImageLeft.size.width, _arrowImageLeft.size.height);
-    self = [super initWithFrame:_currentFrame];
+    self = [super initWithFrame:frame];
     if (self) {
+        self.arrowImageLeft = [UIImage imageNamed:imageLeft];
+        self.arrowImageRight = [UIImage imageNamed:imageRight];
         self.alpha = IND_NOT_VISIBLE;
     }
     return self;
@@ -52,22 +51,31 @@ int const IND_NONE = 0;
     self.currentFrame = self.frame;
     _currentFrame.origin = point;
     self.frame = _currentFrame;
+
+    [self animateShowIndicatorWithCompletion:^(BOOL finished) {
+        [self animateHideIndicatorWithCompletion:NULL];
+    }];
+}
+
+-(void)animateShowIndicatorWithCompletion:(void (^)(BOOL finished))completion NS_AVAILABLE_IOS(4_0)
+{
     [UIView animateWithDuration:IND_APPEAR_DURATION
                           delay:IND_NONE
                         options:IND_NONE
                      animations:^{
                          self.alpha = IND_VISIBLE;
                      }
-                     completion:^(BOOL finished)
-     {
-         [UIView animateWithDuration:IND_DISAPPEAR_DURATION
-                               delay:IND_NONE
-                             options:IND_NONE
-                          animations:^{
-                              self.alpha = IND_NOT_VISIBLE;
-                          }
-                          completion:NULL];
-     }];
+                     completion:completion];
 }
 
+-(void)animateHideIndicatorWithCompletion:(void (^)(BOOL finished))completion NS_AVAILABLE_IOS(4_0)
+{
+    [UIView animateWithDuration:IND_DISAPPEAR_DURATION
+                          delay:IND_NONE
+                        options:IND_NONE
+                     animations:^{
+                         self.alpha = IND_NOT_VISIBLE;
+                     }
+                     completion:completion];
+}
 @end

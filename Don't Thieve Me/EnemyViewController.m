@@ -7,6 +7,7 @@
 //
 
 #import "EnemyViewController.h"
+#import "EnemyViewIndicator.h"
 #import "EnemyView.h"
 
 int const CONTENT_WIDTH = 960;
@@ -15,8 +16,8 @@ int const I35IR_HEIGHT = 480;
 int const WIDTH = 320;
 int const DWIDTH = 640;
 
-int const IMAGE_WIDTH = 40;
-int const IMAGE_HEIGHT = 70;
+int const IMAGE_WIDTH = 53;
+int const IMAGE_HEIGHT = 93;
 int const SCREEN_BORDER = 10;
 int const GAME_LABEL_BORDER = 50;
 int const INT_HUNDRED = 100;
@@ -32,6 +33,9 @@ float const NOT_VISIBLE = 0;
 int const EV_ZERO=0;
 
 int const GAME_QUADRANTS = 3;
+int const INDICATOR_WIDTH = 30;
+int const INDICATOR_HEIGHT = 30;
+
 typedef enum
 {
     FIRST = 0,
@@ -49,9 +53,35 @@ typedef enum
 @end
 
 @implementation EnemyViewController
++(NSMutableArray *)generateEnemies:(int)number_of_enemies delegate:(id)delegate;
+{
+    NSMutableArray *enemies = [[[NSMutableArray alloc] init] autorelease];
+    CGRect indicatorFrame = CGRectMake(EV_ZERO,
+                                       EV_ZERO,
+                                       INDICATOR_WIDTH,
+                                       INDICATOR_HEIGHT);
+    
+    for(int i=EV_ZERO; i < number_of_enemies; i++)
+    {
+        EnemyViewController *enemy = [[[EnemyViewController alloc] init] autorelease];
+        enemy.delegate = delegate;
+        EnemyViewIndicator *indicator = [[[EnemyViewIndicator alloc] initWithFrame:indicatorFrame] autorelease];
+        enemy.indicator = indicator;
+        
+        enemies[i] = enemy;
+        enemy = nil;
+        indicator = nil;
+        [delegate enemyViewCreated:enemies[i]];
+    }
+    return enemies;
+}
+
 -(void)viewDidLoad
 {
-    EnemyView *view = [[EnemyView alloc] initAtPoint:[self getRandomPointInRandomQuadrant]];
+    CGPoint random = [self getRandomPointInRandomQuadrant];
+    CGRect frame = CGRectMake(random.x, random.y, IMAGE_WIDTH, IMAGE_HEIGHT);
+    EnemyView *view = [[EnemyView alloc] initWithFrame:frame];
+
     self.enemyView = view;
     self.enemyView.controller = self;
     self.isEnemyPermanentlyExpired = NO;
@@ -64,28 +94,33 @@ typedef enum
     self.lifeTimeCurrent = LIFE_TIMER;
     self.lifeTimer = [NSTimer scheduledTimerWithTimeInterval:CLOCK_TICK
                                                   target:self
-                                                selector:@selector(lifeTimerFire:)
+                                                selector:@selector(fireLifeTimer:)
                                                 userInfo:nil
                                                  repeats:YES];
     [self.enemyView viewRefreshWithTime:self.lifeTimeCurrent];
 }
 
--(void)lifeTimerFire:(NSTimer *)timer
+-(void)startLifeTimerWithIndicator
+{
+    if(_isEnemyPermanentlyExpired == NO)
+    {
+        [self startLifeTimer];
+        [self.delegate enemyDidAppear:self];
+    }
+}
+
+-(void)fireLifeTimer:(NSTimer *)timer
 {
     self.lifeTimeCurrent--;
     if(_isEnemyPermanentlyExpired == YES)
     {
-        [self.lifeTimer invalidate];
-        self.lifeTimer = nil;
+        [self invalidateTimer];
     } else
     {
         if (self.lifeTimeCurrent == EV_ZERO)
-        {
             [self expireLifeTimerWithEnemyDefeated:NO];
-        } else
-        {
+        else
             [self.enemyView viewRefreshWithTime:self.lifeTimeCurrent];
-        }
     }
 }
 
@@ -96,59 +131,59 @@ typedef enum
 
 -(void)expireLifeTimerWithEnemyDefeated:(BOOL)boolean
 {
-    [self.lifeTimer invalidate];
-    self.lifeTimer = nil;
+    [self invalidateTimer];
+    if(boolean == YES)
+    {
+        [self.enemyView changeImageToCaught];
+        [self.delegate enemyWasDefeated];
+    }
+    if(boolean == NO)
+    {
+        [self.delegate enemyWasNotDefeated];
+    }
     
-        if(boolean == YES)
-        {
-            [self.delegate enemyWasDefeated];
-            self.enemyView.image = _enemyView.caught;
-        }
-        if(boolean == NO)
-            [self.delegate enemyWasNotDefeated];
-        
-        [UIView animateWithDuration:APPEAR_DURATION
-                         animations:^{
-                             self.enemyView.alpha = NOT_VISIBLE;
-                         }
-                         completion:^(BOOL finished)
-         {
-             if(boolean == YES)
-                 self.enemyView.image = _enemyView.normal;
-             self.currentFrame = _enemyView.frame;
-             _currentFrame.origin = [self getRandomPointInRandomQuadrant];
-             self.enemyView.frame = _currentFrame;
-             [UIView animateWithDuration:DISAPPEAR_DURATION
-                              animations:^{
-                                  self.enemyView.alpha = VISIBLE;
-                              }
-                              completion:^(BOOL finished)
-              {
-                  if(_isEnemyPermanentlyExpired == NO)
-                  {
-                      [self startLifeTimer];
-                      [self.delegate enemyDidAppear:self];
-                  } else
-                  {
-                      [self.lifeTimer invalidate];
-                      self.lifeTimer = nil;
-                  }
-              }];
-         }];
-    
+    [self animateEnemySpawn];
+}
+
+-(void)animateEnemySpawn
+{
+    [UIView animateWithDuration:APPEAR_DURATION
+                     animations:^{
+                         self.enemyView.alpha = NOT_VISIBLE;
+                     }
+                     completion:^(BOOL finished)
+     {
+         [self.enemyView changeImageToNormal];
+         [self respawnEnemyAtRandomPoint];
+         
+         [UIView animateWithDuration:DISAPPEAR_DURATION
+                          animations:^{
+                              self.enemyView.alpha = VISIBLE;
+                          }
+                          completion:^(BOOL finished)
+          {
+              [self startLifeTimerWithIndicator];
+          }];
+     }];
+}
+
+-(void)respawnEnemyAtRandomPoint
+{
+    self.currentFrame = _enemyView.frame;
+    _currentFrame.origin = [self getRandomPointInRandomQuadrant];
+    self.enemyView.frame = _currentFrame;
 }
 
 -(CGPoint)getRandomPointInRandomQuadrant
 {
     _randomQuadrant = arc4random() % GAME_QUADRANTS;
     _randomPoint = [self getRandomPoint];
+    
     if (_randomQuadrant == THIRD)
-    {
         _randomPoint.x += DWIDTH;
-    } else if (_randomQuadrant == SECOND)
-    {
+    else if (_randomQuadrant == SECOND)
         _randomPoint.x += WIDTH;
-    }
+    
     return _randomPoint;
 }
 
@@ -166,6 +201,12 @@ typedef enum
 
 -(void)dealloc
 {
+    [_enemyView release];
+    _enemyView = nil;
+    
+    [_lifeTimer release];
+    _lifeTimer = nil;
+
     [super dealloc];
 }
 @end

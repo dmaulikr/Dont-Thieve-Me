@@ -13,8 +13,10 @@ NSString *const MAP_IMG_I35 =@"dtm_med480";
 
 float const SWIPE_OBJ_DURATION = 0.3;
 
-int const I4IR_WIDTH = 320;
-int const I4IR_DWIDTH = 640;
+int const GAME_I4IR_WIDTH = 320;
+int const GAME_I4IR_DWIDTH = 640;
+int const GAME_I35IR_HEIGHT = 480;
+
 int const NUMBER_OF_SCREENS = 3;
 
 int const GV_ZERO = 0;
@@ -30,6 +32,7 @@ typedef enum {
 @end
 
 @implementation GameView
+#pragma mark GameView Initializers
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -38,52 +41,58 @@ typedef enum {
         entireRect.size.width *= NUMBER_OF_SCREENS;
         self.contentSize = entireRect.size;
         self.scrollEnabled = NO;
-
-        if(frame.size.height == 480)
-        {
-            UIImage *image = [UIImage imageNamed:MAP_IMG_I35];
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-            [self addSubview:imageView];
-            [imageView release];
-        } else
-        {
-            UIImage *image = [UIImage imageNamed:MAP_IMG_I4];
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-            [self addSubview:imageView];
-            [imageView release];
-        }
-     
-#pragma mark Swipe Gesture Recognizers
-        UISwipeGestureRecognizer *swipeToLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self
-                                                                                        action:@selector(viewRightScreen)];
-        swipeToLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-        [self addGestureRecognizer:swipeToLeft];
-        UISwipeGestureRecognizer *swipeToRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self
-                                                                                           action:@selector(viewLeftScreen)];
-        swipeToRight.direction = UISwipeGestureRecognizerDirectionRight;
-        [self addGestureRecognizer:swipeToRight];
+        
+        [self setUpGameScreenWithFrame:frame];
+        [self setUpGestureRecognizers];
     }
     return self;
 }
 
--(void)viewRightScreen
+-(void)setUpGameScreenWithFrame:(CGRect)frame
+{
+    NSString *mapName = (frame.size.height == GAME_I35IR_HEIGHT) ? MAP_IMG_I35 : MAP_IMG_I4;
+    UIImage *image = [UIImage imageNamed:mapName];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    [self addSubview:imageView];
+    [imageView release];
+}
+
+-(void)setUpGestureRecognizers
+{
+    UISwipeGestureRecognizer *swipeToLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self
+                                                                                      action:@selector(wasSwipedLeft)];
+    swipeToLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self addGestureRecognizer:swipeToLeft];
+
+    UISwipeGestureRecognizer *swipeToRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self
+                                                                                       action:@selector(wasSwipedRight)];
+    swipeToRight.direction = UISwipeGestureRecognizerDirectionRight;
+    [self addGestureRecognizer:swipeToRight];
+}
+
+-(void)resetGameView
 {
     _currentPoint = self.bounds.origin;
-    if (_currentPoint.x == I4IR_DWIDTH)
-    {} else
+    _currentPoint.x = GV_ZERO;
+}
+
+#pragma mark Swipe Actions and Animations
+-(void)wasSwipedLeft
+{
+    _currentPoint = self.bounds.origin;
+    if (_currentPoint.x != GAME_I4IR_DWIDTH)
     {
-        _currentPoint.x +=I4IR_WIDTH;
+        _currentPoint.x += GAME_I4IR_WIDTH;
         [self animateScreenWithDirection:ANIMATE_RIGHT];
     }
 }
 
--(void)viewLeftScreen
+-(void)wasSwipedRight
 {
     _currentPoint = self.bounds.origin;
-    if (_currentPoint.x == GV_ZERO)
-    {} else
+    if (_currentPoint.x != GV_ZERO)
     {
-        _currentPoint.x -= I4IR_WIDTH;
+        _currentPoint.x -= GAME_I4IR_WIDTH;
         [self animateScreenWithDirection:ANIMATE_LEFT];
     }
 }
@@ -95,9 +104,9 @@ typedef enum {
                         options:GV_NONE
                      animations:^{
                          if(direction == ANIMATE_LEFT)
-                             [self.controller viewScrollDirection:SCROLL_LEFT];
+                             [self.controller scrollScreenInDirection:SCROLL_LEFT];
                          if(direction == ANIMATE_RIGHT)
-                             [self.controller viewScrollDirection:SCROLL_RIGHT];
+                             [self.controller scrollScreenInDirection:SCROLL_RIGHT];
                      }
                      completion:NULL];
     [self setContentOffset:_currentPoint

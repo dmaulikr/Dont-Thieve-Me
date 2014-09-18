@@ -13,8 +13,8 @@
 @property (nonatomic, assign) UIImage *caught;
 @property (nonatomic, assign) UIImage *normal;
 
--(id)initAtPoint:(CGPoint)point;
 -(void)viewReset;
 -(void)viewRefreshWithTime:(float)time;
-
+-(void)changeImageToCaught;
+-(void)changeImageToNormal;
 @end

@@ -18,4 +18,10 @@
 -(void)viewRefreshWithTime:(float)time;
 -(void)viewRefreshWithScore:(int)score;
 -(void)viewRefreshWithTime:(float)time withScore:(int)score;
+-(void)resetGameOverLabel;
+-(void)gameOverLabelIsHidden:(BOOL)boolean;
+
+-(void)showGameOverWithScore:(int)score withHighScore:(int)highscore;
+-(void)showGameOverWithNewHighScore:(int)score;
+-(void)resetLabelPosition;
 @end

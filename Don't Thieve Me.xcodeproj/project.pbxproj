@@ -194,10 +194,10 @@
 		FD3FC56C19C1A04400F41AA3 /* EnemyAssets */ = {
 			isa = PBXGroup;
 			children = (
-				FDA5660619C144E7003847AA /* EnemyViewIndicator.h */,
-				FDA5660719C144E7003847AA /* EnemyViewIndicator.m */,
 				FD14109C19BFEBCD005BBCEB /* EnemyViewController.h */,
 				FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */,
+				FDA5660619C144E7003847AA /* EnemyViewIndicator.h */,
+				FDA5660719C144E7003847AA /* EnemyViewIndicator.m */,
 				FD14109919BFE91B005BBCEB /* EnemyView.h */,
 				FD14109A19BFE91B005BBCEB /* EnemyView.m */,
 			);

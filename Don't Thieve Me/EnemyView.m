@@ -22,33 +22,41 @@ float const CHAR_CTR_H = 15;
 @end
 
 @implementation EnemyView
--(id)initAtPoint:(CGPoint)point
+
+-(id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+
+    [self setUpEnemyImages];
+    
+    frame = CGRectMake(CHAR_CTR_X,
+                       CHAR_CTR_Y,
+                       CHAR_CTR_W,
+                       CHAR_CTR_H);
+    [self setUpLifeTimeLabelWithFrame:frame];
+    
+    self.userInteractionEnabled = YES;
+    
+    return self;
+}
+
+-(void)setUpLifeTimeLabelWithFrame:(CGRect)frame
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    self.labelLifeTime = label;
+    self.labelLifeTime.textColor = [UIColor whiteColor];
+    [self addSubview:self.labelLifeTime];
+    [label release];
+}
+
+-(void)setUpEnemyImages
 {
     UIImage *image = [UIImage imageNamed:CHAR_IMAGE];
     self.normal = image;
     image = [UIImage imageNamed:CHAR_IMAGE_C];
     self.caught = image;
     
-    CGRect frame = CGRectMake(point.x,
-                              point.y,
-                              image.size.width,
-                              image.size.height);
-    
-    self= [super initWithFrame:frame];
-    self.image = _normal;
-    self.userInteractionEnabled = YES;
-    
-    frame = CGRectMake(CHAR_CTR_X,
-                       CHAR_CTR_Y,
-                       CHAR_CTR_W,
-                       CHAR_CTR_H);
-
-    UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    self.labelLifeTime = label;
-    self.labelLifeTime.textColor = [UIColor whiteColor];
-    [self addSubview:self.labelLifeTime];
-    [label release];
-    return self;
+    [self setImage:_normal];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -64,5 +72,15 @@ float const CHAR_CTR_H = 15;
 -(void)viewReset
 {
     self.labelLifeTime.text = RESET_TEXT;
+}
+
+-(void)changeImageToCaught
+{
+    self.image = _caught;
+}
+
+-(void)changeImageToNormal
+{
+    self.image = _normal;
 }
 @end

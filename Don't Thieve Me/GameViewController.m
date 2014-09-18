@@ -28,12 +28,11 @@ int const ARROW_TO_SCREEN_MARGIN = 5;
 
 int const GAME_HEIGHT = 480;
 int const GAME_WIDTH = 320;
+
 float const GAME_VISIBLE = 1.0;
 float const GAME_NOT_VISIBLE = 0.0;
 
-NSString *const LABEL_NEW_HIGH_SCORE = @"\nNew High Score!";
-NSString *const LABEL_HIGH_SCORE = @"\nHigh Score: ";
-NSString *const LABEL_GAME_OVER = @"GAME OVER\nScore: ";
+NSString *const DICTIONARY_FILENAME = @"high score";
 
 typedef enum
 {
@@ -57,39 +56,47 @@ int const FIRST_OBJECT = 0;
 @property (nonatomic, assign) CGPoint currentPosition;
 @property (nonatomic, assign) offsetScreen currentQuadrant;
 
-@property (nonatomic, assign) float timeCurrent;
-@property (nonatomic, assign) int scoreCurrent;
+@property (nonatomic, assign) float currentTime;
+@property (nonatomic, assign) int currentScore;
 @property (nonatomic, assign) BOOL isGameOngoing;
 
 @property (nonatomic, retain) NSTimer *gameClock;
 
 @property (nonatomic, retain) NSMutableArray *enemies;
-@property (nonatomic, retain) NSMutableArray *indicators;
 
-@property (nonatomic, retain) UILongPressGestureRecognizer *pressGesture;
+@property (nonatomic, retain) UILongPressGestureRecognizer *longPressGesture;
 
 @end
 
 @implementation GameViewController
+#pragma mark GameViewController Initializers
 -(void)viewDidLoad
 {
     CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
-    GameView *view = [[GameView alloc] initWithFrame:applicationFrame];
+    
+    [self setUpGameViewWithFrame:applicationFrame];
+    [self setUpGameLabelViewWithFrame:applicationFrame];
+    [self readFileFromSandBox];
+    
+    self.longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                            action:@selector(pressedPlayAgain)] autorelease];
+}
+
+-(void)setUpGameViewWithFrame:(CGRect)frame
+{
+    GameView *view = [[GameView alloc] initWithFrame:frame];
     self.entireView = view;
     [self setView:self.entireView];
     [view release];
-    
-    GameLabelView *lView = [[GameLabelView alloc] initWithFrame:applicationFrame];
+}
+
+-(void)setUpGameLabelViewWithFrame:(CGRect)frame
+{
+    GameLabelView *lView = [[GameLabelView alloc] initWithFrame:frame];
     self.labelView = lView;
     self.entireView.controller = self.labelView;
     [self.view addSubview:self.labelView];
     [lView release];
-    
-    self.pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                            action:@selector(pressedPlayAgain)];
-    
-    [self readFileFromSandBox];
-
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -102,138 +109,110 @@ int const FIRST_OBJECT = 0;
     }
 }
 
-#pragma Game Setup
+#pragma mark Game Setup
+-(void)enemyViewCreated:(EnemyViewController *)enemyView
+{
+    [self.view addSubview:enemyView.view];
+    [self.view addSubview:enemyView.indicator];
+    [enemyView startLifeTimer];
+}
+
 -(void)beginGameWithTime:(float)time withScore:(int)score withEnemyCount:(int)count
 {
-    self.labelView.gameOverLabel.text = LABEL_GAME_OVER;
-    self.labelView.gameOverLabel.alpha = GAME_NOT_VISIBLE;
+    self.enemies = [EnemyViewController generateEnemies:NUMBER_OF_ENEMIES
+                                delegate:self];
 
-    if(!self.enemies)
-    {
-        self.enemies = [NSMutableArray array];
-    }
-    if(!self.indicators)
-    {
-        self.indicators = [NSMutableArray array];
-    }
-    for(int i=ZERO; i < NUMBER_OF_ENEMIES; i++)
-    {
-
-        EnemyViewController *enemy = [[[EnemyViewController alloc] init] autorelease];
-        enemy.delegate = self;
-        
-        EnemyViewIndicator *indicator = [[[EnemyViewIndicator alloc] init] autorelease];
-        enemy.indicator = indicator;
-        self.enemies[i] = enemy;
-        self.indicators[i] = indicator;
-        
-        [self.view addSubview:[(EnemyViewController *)self.enemies[i] view]];
-        [self.view addSubview:(EnemyViewIndicator *)self.indicators[i]];
-        [enemy startLifeTimer];
-        
-        enemy = nil;
-        indicator = nil;
-    }
-
-    self.timeCurrent = time;
-    self.scoreCurrent = score;
-
+    self.currentTime = time;
+    self.currentScore = score;
     self.gameClock = [NSTimer scheduledTimerWithTimeInterval:GAME_CLOCK_TICK
                                                   target:self
-                                                selector:@selector(gameClockFire:)
+                                                selector:@selector(fireGameClock:)
                                                 userInfo:nil
                                                  repeats:YES];
+    
     self.entireView.userInteractionEnabled = YES;
     self.isGameOngoing = YES;
+
     _currentPosition.x = ZERO;
     self.entireView.contentOffset = _currentPosition;
-    
-    [self gameRefresh];
+    [self.labelView resetLabelPosition];
+    [self refreshGame];
 }
 
--(void)gameRefresh
+-(void)refreshGame
 {
-    [self.labelView viewRefreshWithTime:self.timeCurrent withScore:self.scoreCurrent];
+    [self.labelView viewRefreshWithTime:self.currentTime withScore:self.currentScore];
+    [self.labelView resetGameOverLabel];
 }
 
--(void)gameClockFire:(NSTimer *)timer
+-(void)fireGameClock:(NSTimer *)timer
 {
-    self.timeCurrent--;
-    [self gameRefresh];
-    if(self.timeCurrent == END_TIME)
+    self.currentTime--;
+    [self refreshGame];
+    if(self.currentTime == END_TIME)
     {
         [self endGame];
     }
 }
 
-
+#pragma mark End Game Modifiers
 -(void)endGame
+{
+    [self resetGame];
+    BOOL isNewHighScoreAchieved = [self didPlayerAchieveHighScore];
+    [self showGameOverScreenDidAchieveHighScore:isNewHighScoreAchieved];
+
+    [self.labelView gameOverLabelIsHidden:NO];
+    [self.entireView addGestureRecognizer:self.longPressGesture];
+}
+
+-(void)resetGame
 {
     [self.gameClock invalidate];
     self.gameClock = nil;
-    for(int i=ZERO; i<NUMBER_OF_ENEMIES; i++)
+
+    for(EnemyViewController *enemyView in self.enemies)
     {
-        [self.enemies[i] setIsEnemyPermanentlyExpired:YES];
-    }
-    for(int i=ZERO; i<NUMBER_OF_ENEMIES; i++)
-    {
-        UIView *lastEnemyView = [self.enemies[i] view];
-        [lastEnemyView removeFromSuperview];
-        lastEnemyView = nil;
-        UIView *lastIndicatorView = self.indicators[i];
-        [lastIndicatorView removeFromSuperview];
-        lastIndicatorView = nil;
+        [enemyView setIsEnemyPermanentlyExpired:YES];
+        [enemyView.view removeFromSuperview];
+        [enemyView.indicator removeFromSuperview];
     }
     [self.enemies removeAllObjects];
-    [self.indicators removeAllObjects];
-    
-    if(_scoreCurrent > _highScore)
-    {
-        [self scoreRefreshWithNewHighScore:YES];
-    } else
-    {
-        [self scoreRefreshWithNewHighScore:NO];
-    }
-    
-    [self.entireView addGestureRecognizer:self.pressGesture];
 }
 
--(void)scoreRefreshWithNewHighScore:(BOOL)boolean
+-(BOOL)didPlayerAchieveHighScore
 {
-    NSString *stringScore = [NSString stringWithFormat:@"%i",_scoreCurrent];
-    self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:stringScore];
-    
-    if(boolean)
-    {
-        self.highScore = _scoreCurrent;
-        self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:LABEL_NEW_HIGH_SCORE];
+    if(_currentScore > _highScore)
+        return YES;
+    else
+        return  NO;
+}
+
+-(void)showGameOverScreenDidAchieveHighScore:(BOOL)highScoreIsAchieved
+{
+    if(highScoreIsAchieved) {
+        self.highScore = _currentScore;
         [self writeFileToSandBox];
-    } else
-    {
-        self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:LABEL_HIGH_SCORE];
-        stringScore = [NSString stringWithFormat:@"%i",_highScore];
-        self.labelView.gameOverLabel.text = [_labelView.gameOverLabel.text stringByAppendingString:stringScore];
+        [self.labelView showGameOverWithNewHighScore:_currentScore];
     }
-    
-    self.labelView.gameOverLabel.alpha = GAME_VISIBLE;
+    else
+        [self.labelView showGameOverWithScore:_currentScore
+                                withHighScore:_highScore];
+   
 }
 
 -(void)pressedPlayAgain
 {
+    [self.entireView removeGestureRecognizer:self.longPressGesture];
     self.isGameOngoing = NO;
     [self.navigationController popViewControllerAnimated:NO];
 }
 
-#pragma Game Events
+#pragma mark Game Events
 -(void)enemyWasDefeated
 {
-    self.scoreCurrent += SCORE_PER_HIT;
-    [self gameRefresh];
-}
-
--(void)enemyWasNotDefeated
-{
-    
+    self.currentScore += SCORE_PER_HIT;
+    [self refreshGame];
 }
 
 -(void)enemyDidAppear:(EnemyViewController *)enemy
@@ -268,6 +247,7 @@ int const FIRST_OBJECT = 0;
     [enemy.indicator setImageDirection:direction atPoint:position];
 }
 
+#pragma mark Game Helper Methods
 -(void)readFileFromSandBox
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
@@ -276,8 +256,9 @@ int const FIRST_OBJECT = 0;
     NSString *filePath = [paths objectAtIndex:FIRST_OBJECT];
     filePath = [filePath stringByAppendingPathComponent:GAMESTORE_FILEPATH];
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
-    self.highScore = [[dictionary valueForKey:@"high score"] intValue];
+    self.highScore = [[dictionary valueForKey:DICTIONARY_FILENAME] intValue];
 }
+
 -(void)writeFileToSandBox
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
@@ -286,7 +267,7 @@ int const FIRST_OBJECT = 0;
     NSString *filePath = [paths objectAtIndex:FIRST_OBJECT];
     filePath = [filePath stringByAppendingPathComponent:GAMESTORE_FILEPATH];
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:self.highScore]
-                                                                         forKey:@"high score"];
+                                                                         forKey:DICTIONARY_FILENAME];
     [[NSString stringWithFormat:@"%@",dictionary] writeToFile:filePath
                                                    atomically:YES
                                                      encoding:NSUTF8StringEncoding
@@ -294,4 +275,26 @@ int const FIRST_OBJECT = 0;
     
 }
 
+-(NSMutableArray *)enemies
+{
+    if(_enemies == nil) {
+        _enemies = [[NSMutableArray alloc] init];
+    }
+    return _enemies;
+}
+
+-(void)dealloc
+{
+    [_entireView release];
+    _entireView = nil;
+    [_labelView release];
+    _labelView = nil;
+    
+    [_gameClock invalidate];
+    _gameClock = nil;
+    
+    _enemies = nil;
+    
+    [super dealloc];
+}
 @end

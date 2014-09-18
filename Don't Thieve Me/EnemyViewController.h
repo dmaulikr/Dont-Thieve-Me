@@ -10,9 +10,11 @@
 @class  EnemyViewController;
 @class EnemyViewIndicator;
 @protocol EnemyControllerDelegate
+-(void)enemyViewCreated:(EnemyViewController *)enemyView;
+@optional
 -(void)enemyWasDefeated;
 -(void)enemyWasNotDefeated;
--(void)enemyDidAppear:(EnemyViewController *)enemy ;
+-(void)enemyDidAppear:(EnemyViewController *)enemy;
 @end
 
 @interface EnemyViewController : UIViewController
@@ -23,6 +25,7 @@
 
 @property (nonatomic, assign) id indicator;
 
++(NSMutableArray *)generateEnemies:(int)number_of_enemies delegate:(id)delegate;
 -(void)startLifeTimer;
 -(void)invalidateTimer;
 @end
