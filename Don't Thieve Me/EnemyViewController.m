@@ -136,12 +136,7 @@ typedef enum
     {
         [self.enemyView changeImageToCaught];
         [self.delegate enemyWasDefeated];
-    }
-    if(boolean == NO)
-    {
-        [self.delegate enemyWasNotDefeated];
-    }
-    
+    }    
     [self animateEnemySpawn];
 }
 

@@ -14,13 +14,15 @@
 #import "EnemyViewIndicator.h"
 #import "EnemyViewController.h"
 
-int const ZERO = 0;
-int const NUMBER_OF_ENEMIES = 5;
-int const INIT_TIME = 30;
-int const END_TIME = 0;
-int const INIT_SCORE = 0;
-int const SCORE_PER_HIT = 1;
+
+int const INIT_TIME = 30; //The length of time the game will run
+int const INIT_SCORE = 0; //Starting score
+int const NUMBER_OF_ENEMIES = 5; //The number of enemies appearing in all the screens at any given time
+int const SCORE_PER_HIT = 1; //The number added to the score for every enemy defeated
+
 int const GAME_CLOCK_TICK = 1;
+int const END_TIME = 0;
+int const GVC_ZERO = 0;
 
 int const ARROW_IMG_WIDTH = 30;
 int const ARROW_IMG_HEIGHT = 30;
@@ -40,10 +42,6 @@ typedef enum
     SCREEN_2 = GAME_WIDTH,
     SCREEN_3 = GAME_WIDTH*2,
 }offsetScreen;
-
-NSString *const KEYPATH_HIGHSCORE = @"high score";
-NSString *const KEYPATH_HIGHSCORE_N_SCORES = @"SCORE";
-NSString *const KEYPATH_HIGHSCORE_1 = @"1";
 
 NSString *const GAMESTORE_FILEPATH = @"scores.json";
 NSString *const PATH_FOR_RESOURCE = @"scores";
@@ -119,24 +117,36 @@ int const FIRST_OBJECT = 0;
 
 -(void)beginGameWithTime:(float)time withScore:(int)score withEnemyCount:(int)count
 {
-    self.enemies = [EnemyViewController generateEnemies:NUMBER_OF_ENEMIES
+    self.enemies = [EnemyViewController generateEnemies:count
                                 delegate:self];
 
-    self.currentTime = time;
-    self.currentScore = score;
-    self.gameClock = [NSTimer scheduledTimerWithTimeInterval:GAME_CLOCK_TICK
-                                                  target:self
-                                                selector:@selector(fireGameClock:)
-                                                userInfo:nil
-                                                 repeats:YES];
-    
-    self.entireView.userInteractionEnabled = YES;
-    self.isGameOngoing = YES;
-
-    _currentPosition.x = ZERO;
-    self.entireView.contentOffset = _currentPosition;
+    [self setGameScore:score];
+    [self setGameStartingPosition];
     [self.labelView resetLabelPosition];
+    [self beginGameWithTime:time];
+    [self setIsGameOngoing:YES];
     [self refreshGame];
+}
+
+-(void)beginGameWithTime:(float)time
+{
+    self.currentTime = time;
+    self.gameClock = [NSTimer scheduledTimerWithTimeInterval:GAME_CLOCK_TICK
+                                                      target:self
+                                                    selector:@selector(fireGameClock:)
+                                                    userInfo:nil
+                                                     repeats:YES];
+}
+
+-(void)setGameScore:(int)score
+{
+    self.currentScore = score;
+}
+
+-(void)setGameStartingPosition
+{
+    _currentPosition.x = GVC_ZERO;
+    self.entireView.contentOffset = _currentPosition;
 }
 
 -(void)refreshGame
@@ -158,7 +168,7 @@ int const FIRST_OBJECT = 0;
 #pragma mark End Game Modifiers
 -(void)endGame
 {
-    [self resetGame];
+    [self removeGameObjects];
     BOOL isNewHighScoreAchieved = [self didPlayerAchieveHighScore];
     [self showGameOverScreenDidAchieveHighScore:isNewHighScoreAchieved];
 
@@ -166,7 +176,7 @@ int const FIRST_OBJECT = 0;
     [self.entireView addGestureRecognizer:self.longPressGesture];
 }
 
--(void)resetGame
+-(void)removeGameObjects
 {
     [self.gameClock invalidate];
     self.gameClock = nil;
@@ -204,7 +214,7 @@ int const FIRST_OBJECT = 0;
 -(void)pressedPlayAgain
 {
     [self.entireView removeGestureRecognizer:self.longPressGesture];
-    self.isGameOngoing = NO;
+    [self setIsGameOngoing:NO];
     [self.navigationController popViewControllerAnimated:NO];
 }
 

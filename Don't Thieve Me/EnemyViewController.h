@@ -13,7 +13,6 @@
 -(void)enemyViewCreated:(EnemyViewController *)enemyView;
 @optional
 -(void)enemyWasDefeated;
--(void)enemyWasNotDefeated;
 -(void)enemyDidAppear:(EnemyViewController *)enemy;
 @end
 
