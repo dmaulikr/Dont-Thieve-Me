@@ -10,7 +10,6 @@
 
 NSString *const CHAR_IMAGE = @"enemy_burglar";
 NSString *const CHAR_IMAGE_C = @"enemy_caught";
-NSString *const RESET_TEXT = @"";
 
 float const CHAR_CTR_X = 26.5;
 float const CHAR_CTR_Y = 73;
@@ -26,6 +25,7 @@ float const CHAR_CTR_H = 15;
 -(id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
+    self.userInteractionEnabled = YES;
 
     [self setUpEnemyImages];
     
@@ -34,9 +34,6 @@ float const CHAR_CTR_H = 15;
                        CHAR_CTR_W,
                        CHAR_CTR_H);
     [self setUpLifeTimeLabelWithFrame:frame];
-    
-    self.userInteractionEnabled = YES;
-    
     return self;
 }
 
@@ -64,14 +61,9 @@ float const CHAR_CTR_H = 15;
     [self.controller touchesBegan:touches withEvent:event];
 }
 
--(void)viewRefreshWithTime:(float)time
+-(void)refreshViewWithTime:(float)time
 {
     self.labelLifeTime.text = [NSString stringWithFormat:@"%.0f",time];
-}
-
--(void)viewReset
-{
-    self.labelLifeTime.text = RESET_TEXT;
 }
 
 -(void)changeImageToCaught
@@ -82,5 +74,15 @@ float const CHAR_CTR_H = 15;
 -(void)changeImageToNormal
 {
     self.image = _normal;
+}
+
+-(void)dealloc
+{
+    [_normal release];
+    _normal = nil;
+    [_caught release];
+    _caught = nil;
+
+    [super dealloc];
 }
 @end

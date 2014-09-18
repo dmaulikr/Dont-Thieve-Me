@@ -10,15 +10,11 @@
 
 typedef enum
 {
-    LEFT,
-    RIGHT
-}enumImage;
+    LEFT_ARROW,
+    RIGHT_ARROW
+}enumIndicator;
 
 @interface EnemyViewIndicator : UIImageView
-@property (nonatomic, retain) UIImage *arrowImageLeft;
-@property (nonatomic, retain) UIImage *arrowImageRight;
-@property (nonatomic, assign) CGRect currentFrame;
-
--(void)setImageDirection:(enumImage)direction;
--(void)setImageDirection:(enumImage)direction atPoint:(CGPoint)point;
+-(void)setImageDirection:(enumIndicator)direction;
+-(void)setImageDirection:(enumIndicator)direction atPoint:(CGPoint)point;
 @end

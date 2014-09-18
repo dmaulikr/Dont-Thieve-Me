@@ -10,31 +10,11 @@
 #import "EnemyViewIndicator.h"
 #import "EnemyView.h"
 
-int const CONTENT_WIDTH = 960;
-int const I4IR_HEIGHT = 568;
-int const I35IR_HEIGHT = 480;
-int const WIDTH = 320;
-int const DWIDTH = 640;
-
-int const IMAGE_WIDTH = 53;
-int const IMAGE_HEIGHT = 93;
-int const SCREEN_BORDER = 10;
-int const GAME_LABEL_BORDER = 50;
-int const INT_HUNDRED = 100;
-float const FLOAT_HUNDRED = 100;
-
 float const LIFE_TIMER = 5;
 int const CLOCK_TICK = 1;
 
 float const APPEAR_DURATION = 0.4;
 float const DISAPPEAR_DURATION = 0.4;
-float const VISIBLE = 1;
-float const NOT_VISIBLE = 0;
-int const EV_ZERO=0;
-
-int const GAME_QUADRANTS = 3;
-int const INDICATOR_WIDTH = 30;
-int const INDICATOR_HEIGHT = 30;
 
 typedef enum
 {
@@ -42,6 +22,24 @@ typedef enum
     SECOND = 1,
     THIRD = 2,
 }GameQuadrant;
+int const SECOND_QUADRANT_POSITION = 320;
+int const THIRD_QUADRANT_POSITION = 640;
+int const GAME_QUADRANTS = 3;
+
+float const VISIBLE = 1;
+float const NOT_VISIBLE = 0;
+int const EV_ZERO=0;
+int const INT_HUNDRED = 100;
+float const FLOAT_HUNDRED = 100;
+
+int const I35IR_HEIGHT = 480;
+int const EVC_WIDTH = 320;
+int const IMAGE_WIDTH = 53;
+int const IMAGE_HEIGHT = 93;
+int const SCREEN_BORDER = 10;
+int const GAME_LABEL_BORDER = 50;
+int const INDICATOR_WIDTH = 30;
+int const INDICATOR_HEIGHT = 30;
 
 @interface EnemyViewController ()
 @property (nonatomic, retain) EnemyView *enemyView;
@@ -97,7 +95,7 @@ typedef enum
                                                 selector:@selector(fireLifeTimer:)
                                                 userInfo:nil
                                                  repeats:YES];
-    [self.enemyView viewRefreshWithTime:self.lifeTimeCurrent];
+    [self.enemyView refreshViewWithTime:self.lifeTimeCurrent];
 }
 
 -(void)startLifeTimerWithIndicator
@@ -120,7 +118,7 @@ typedef enum
         if (self.lifeTimeCurrent == EV_ZERO)
             [self expireLifeTimerWithEnemyDefeated:NO];
         else
-            [self.enemyView viewRefreshWithTime:self.lifeTimeCurrent];
+            [self.enemyView refreshViewWithTime:self.lifeTimeCurrent];
     }
 }
 
@@ -149,7 +147,7 @@ typedef enum
                      completion:^(BOOL finished)
      {
          [self.enemyView changeImageToNormal];
-         [self respawnEnemyAtRandomPoint];
+         [self respawnEnemyAtRandomPointInRandomQuadrant];
          
          [UIView animateWithDuration:DISAPPEAR_DURATION
                           animations:^{
@@ -162,7 +160,7 @@ typedef enum
      }];
 }
 
--(void)respawnEnemyAtRandomPoint
+-(void)respawnEnemyAtRandomPointInRandomQuadrant
 {
     self.currentFrame = _enemyView.frame;
     _currentFrame.origin = [self getRandomPointInRandomQuadrant];
@@ -175,19 +173,20 @@ typedef enum
     _randomPoint = [self getRandomPoint];
     
     if (_randomQuadrant == THIRD)
-        _randomPoint.x += DWIDTH;
+        _randomPoint.x += THIRD_QUADRANT_POSITION;
     else if (_randomQuadrant == SECOND)
-        _randomPoint.x += WIDTH;
+        _randomPoint.x += SECOND_QUADRANT_POSITION;
     
     return _randomPoint;
 }
 
 -(CGPoint)getRandomPoint
 {
-    _randomPoint = CGPointMake((arc4random() % ((WIDTH - IMAGE_WIDTH - SCREEN_BORDER)*INT_HUNDRED)/FLOAT_HUNDRED),
+    _randomPoint = CGPointMake((arc4random() % ((EVC_WIDTH - IMAGE_WIDTH - SCREEN_BORDER)*INT_HUNDRED)/FLOAT_HUNDRED),
                                (arc4random() % ((I35IR_HEIGHT-IMAGE_HEIGHT-GAME_LABEL_BORDER))*INT_HUNDRED)/FLOAT_HUNDRED);
     return _randomPoint;
 }
+
 -(void)invalidateTimer
 {
     [self.lifeTimer invalidate];
@@ -198,7 +197,7 @@ typedef enum
 {
     [_enemyView release];
     _enemyView = nil;
-    
+
     [_lifeTimer release];
     _lifeTimer = nil;
 

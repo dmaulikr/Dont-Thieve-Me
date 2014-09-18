@@ -9,7 +9,4 @@
 #import <UIKit/UIKit.h>
 
 @interface GameViewController : UIViewController
-@property (nonatomic, assign) int highScore;
-
--(void)beginGameWithTime:(float)time withScore:(int)score withEnemyCount:(int)count;
 @end

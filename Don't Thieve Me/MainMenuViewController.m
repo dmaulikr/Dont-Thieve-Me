@@ -9,6 +9,10 @@
 #import "MainMenuViewController.h"
 #import "GameViewController.h"
 
+@interface MainMenuViewController ()
+@property (nonatomic, retain) GameViewController *gvc;
+@end
+
 @implementation MainMenuViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -29,4 +33,10 @@
     [self.navigationController pushViewController:_gvc animated:NO];
 }
 
+-(void)dealloc
+{
+    [_gvc release];
+    _gvc = nil;
+    [super dealloc];
+}
 @end

@@ -20,7 +20,11 @@ float const IND_DISAPPEAR_DURATION = 0.5;
 int const IND_NONE = 0;
 
 @interface EnemyViewIndicator ()
+@property (nonatomic, retain) UIImage *arrowImageLeft;
+@property (nonatomic, retain) UIImage *arrowImageRight;
+@property (nonatomic, assign) CGRect currentFrame;
 @end
+
 @implementation EnemyViewIndicator
 
 - (id)initWithFrame:(CGRect)frame
@@ -34,27 +38,29 @@ int const IND_NONE = 0;
     return self;
 }
 
--(void)setImageDirection:(enumImage)direction
+-(void)setImageDirection:(enumIndicator)direction
 {
-    if (direction == LEFT)
-    {
+    if (direction == LEFT_ARROW)
         self.image = self.arrowImageLeft;
-    } else if (direction == RIGHT)
-    {
+    else if (direction == RIGHT_ARROW)
         self.image = self.arrowImageRight;
-    }
 }
 
--(void)setImageDirection:(enumImage)direction atPoint:(CGPoint)point
+-(void)setImageDirection:(enumIndicator)direction atPoint:(CGPoint)point
 {
     [self setImageDirection:direction];
-    self.currentFrame = self.frame;
-    _currentFrame.origin = point;
-    self.frame = _currentFrame;
+    [self moveViewToPoint:point];
 
     [self animateShowIndicatorWithCompletion:^(BOOL finished) {
         [self animateHideIndicatorWithCompletion:NULL];
     }];
+}
+
+-(void)moveViewToPoint:(CGPoint)origin
+{
+    CGRect frame = self.frame;
+    frame.origin = origin;
+    self.frame = frame;
 }
 
 -(void)animateShowIndicatorWithCompletion:(void (^)(BOOL finished))completion NS_AVAILABLE_IOS(4_0)
@@ -77,5 +83,16 @@ int const IND_NONE = 0;
                          self.alpha = IND_NOT_VISIBLE;
                      }
                      completion:completion];
+}
+
+-(void)dealloc
+{
+    [_arrowImageLeft release];
+    _arrowImageLeft = nil;
+    
+    [_arrowImageRight release];
+    _arrowImageRight = nil;
+    
+    [super dealloc];
 }
 @end

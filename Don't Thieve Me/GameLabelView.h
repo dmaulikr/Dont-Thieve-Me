@@ -15,11 +15,11 @@
 @property (nonatomic, retain) UILabel *highScoreLabel;
 @property (nonatomic, retain) UILabel *gameOverLabel;
 
--(void)viewRefreshWithTime:(float)time;
--(void)viewRefreshWithScore:(int)score;
--(void)viewRefreshWithTime:(float)time withScore:(int)score;
+-(void)refreshViewWithTime:(float)time;
+-(void)refreshViewWithScore:(int)score;
+-(void)refreshViewWithTime:(float)time withScore:(int)score;
 -(void)resetGameOverLabel;
--(void)gameOverLabelIsHidden:(BOOL)boolean;
+-(void)isGameOverLabelHidden:(BOOL)boolean;
 
 -(void)showGameOverWithScore:(int)score withHighScore:(int)highscore;
 -(void)showGameOverWithNewHighScore:(int)score;

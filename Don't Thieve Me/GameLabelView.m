@@ -11,15 +11,18 @@
 
 NSString *const TEXT_TIMER = @"Timer: ";
 NSString *const TEXT_SCORE = @"Score: ";
-NSString *const GAME_OVER = @"GAME OVER\nScore: ";
+
+NSString *const GAME_OVER_LABEL = @"GAME OVER\nScore: ";
+NSString *const GAME_OVER_LABEL_N = @"\nNew High Score!";
+NSString *const GAME_OVER_LABEL_H = @"\n High Score: ";
+
+float const RESET_POINT_VALUE = 0;
 
 float const WIDTH_ORIGIN_MODIFIER = 10;
 float const SIZE_ORIGIN_MODIFIER = 30.0;
 float const WIDTH_MODIFIER = 3;
 float const HEIGHT_MODIFIER = 20;
-
 float const SCORE_WIDTH_ORIGIN_MODIFIER = 3;
-
 float const GAMEOVER_X_MODIFIER = 2;
 float const GAMEOVER_Y_MODIFIER = 2;
 float const GAMEOVER_WIDTH_MODIFIER = 4;
@@ -29,13 +32,6 @@ int const GAMEOVER_FONT_SIZE = 35;
 float const GAMEOVER_ALPHA_VISIBLE = 1;
 float const GAMEOVER_ALPHA_NOT_VISIBLE = 0;
 
-float const RESET_POINT_VALUE = 0;
-
-NSString *const LABEL_GAME_OVER = @"GAME OVER\nScore: ";
-
-NSString *const GAME_OVER_LABEL = @"GAME OVER\nScore: ";
-NSString *const GAME_OVER_LABEL_N = @"\nNew High Score!";
-NSString *const GAME_OVER_LABEL_H = @"\n High Score: ";
 
 @interface GameLabelView()<GameScrollDelegate>
 @property (nonatomic, assign) CGRect currentFrame;
@@ -110,26 +106,26 @@ NSString *const GAME_OVER_LABEL_H = @"\n High Score: ";
 }
 
 #pragma mark GameLabelView Display Methods
--(void)viewRefreshWithTime:(float)time
+-(void)refreshViewWithTime:(float)time
 {
     self.timeLabel.text = [NSString stringWithFormat:@"%@: %.0f",TEXT_TIMER,time];
 }
 
--(void)viewRefreshWithScore:(int)score
+-(void)refreshViewWithScore:(int)score
 {
     self.scoreLabel.text = [NSString stringWithFormat:@"%@: %i",TEXT_SCORE,score];
 }
 
--(void)viewRefreshWithTime:(float)time withScore:(int)score
+-(void)refreshViewWithTime:(float)time withScore:(int)score
 {
-    [self viewRefreshWithTime:time];
-    [self viewRefreshWithScore:score];
+    [self refreshViewWithTime:time];
+    [self refreshViewWithScore:score];
 }
 
 -(void)resetGameOverLabel
 {
-    self.gameOverLabel.text = LABEL_GAME_OVER;
-    [self gameOverLabelIsHidden:YES];
+    self.gameOverLabel.text = GAME_OVER_LABEL;
+    [self isGameOverLabelHidden:YES];
 }
 
 -(void)resetLabelPosition
@@ -138,7 +134,7 @@ NSString *const GAME_OVER_LABEL_H = @"\n High Score: ";
     self.frame = self.currentFrame;
 }
 
--(void)gameOverLabelIsHidden:(BOOL)boolean
+-(void)isGameOverLabelHidden:(BOOL)boolean
 {
     if(boolean == YES) {
         self.gameOverLabel.alpha = GAMEOVER_ALPHA_NOT_VISIBLE;

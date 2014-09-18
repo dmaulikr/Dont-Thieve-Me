@@ -10,5 +10,4 @@
 @class GameViewController;
 
 @interface MainMenuViewController : UIViewController
-@property (nonatomic, retain) GameViewController *gvc;
 @end

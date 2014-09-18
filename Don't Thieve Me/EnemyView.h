@@ -10,11 +10,10 @@
 
 @interface EnemyView : UIImageView
 @property (nonatomic, assign) id controller;
-@property (nonatomic, assign) UIImage *caught;
-@property (nonatomic, assign) UIImage *normal;
+@property (nonatomic, retain) UIImage *caught;
+@property (nonatomic, retain) UIImage *normal;
 
--(void)viewReset;
--(void)viewRefreshWithTime:(float)time;
+-(void)refreshViewWithTime:(float)time;
 -(void)changeImageToCaught;
 -(void)changeImageToNormal;
 @end

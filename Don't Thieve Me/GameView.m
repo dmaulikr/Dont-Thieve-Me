@@ -11,20 +11,19 @@
 NSString *const MAP_IMG_I4 = @"dtm_map_med";
 NSString *const MAP_IMG_I35 =@"dtm_med480";
 
-float const SWIPE_OBJ_DURATION = 0.3;
-
 int const GAME_I4IR_WIDTH = 320;
-int const GAME_I4IR_DWIDTH = 640;
 int const GAME_I35IR_HEIGHT = 480;
-
 int const NUMBER_OF_SCREENS = 3;
+int const MAX_SCROLL_VALUE_LEFT = 0;
+int const MAX_SCROLL_VALUE_RIGHT = 640;
 
-int const GV_ZERO = 0;
+float const SWIPE_ANIMATION_DURATION = 0.3;
+
 int const GV_NONE = 0;
 
 typedef enum {
-    ANIMATE_LEFT = 0,
-    ANIMATE_RIGHT = 1
+    MOVE_SCREEN_LEFT = 0,
+    MOVE_SCREEN_RIGHT = 1
 }animateDirection;
 
 @interface GameView()
@@ -73,39 +72,39 @@ typedef enum {
 -(void)resetGameView
 {
     _currentPoint = self.bounds.origin;
-    _currentPoint.x = GV_ZERO;
+    _currentPoint.x = MAX_SCROLL_VALUE_LEFT;
 }
 
 #pragma mark Swipe Actions and Animations
 -(void)wasSwipedLeft
 {
     _currentPoint = self.bounds.origin;
-    if (_currentPoint.x != GAME_I4IR_DWIDTH)
+    if (_currentPoint.x != MAX_SCROLL_VALUE_RIGHT)
     {
         _currentPoint.x += GAME_I4IR_WIDTH;
-        [self animateScreenWithDirection:ANIMATE_RIGHT];
+        [self animateScreenWithDirection:MOVE_SCREEN_RIGHT];
     }
 }
 
 -(void)wasSwipedRight
 {
     _currentPoint = self.bounds.origin;
-    if (_currentPoint.x != GV_ZERO)
+    if (_currentPoint.x != MAX_SCROLL_VALUE_LEFT)
     {
         _currentPoint.x -= GAME_I4IR_WIDTH;
-        [self animateScreenWithDirection:ANIMATE_LEFT];
+        [self animateScreenWithDirection:MOVE_SCREEN_LEFT];
     }
 }
 
 -(void)animateScreenWithDirection:(animateDirection)direction
 {
-    [UIView animateWithDuration:SWIPE_OBJ_DURATION
+    [UIView animateWithDuration:SWIPE_ANIMATION_DURATION
                           delay:GV_NONE
                         options:GV_NONE
                      animations:^{
-                         if(direction == ANIMATE_LEFT)
+                         if(direction == MOVE_SCREEN_LEFT)
                              [self.controller scrollScreenInDirection:SCROLL_LEFT];
-                         if(direction == ANIMATE_RIGHT)
+                         if(direction == MOVE_SCREEN_RIGHT)
                              [self.controller scrollScreenInDirection:SCROLL_RIGHT];
                      }
                      completion:NULL];

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 @class  EnemyViewController;
 @class EnemyViewIndicator;
+
 @protocol EnemyControllerDelegate
 -(void)enemyViewCreated:(EnemyViewController *)enemyView;
 @optional

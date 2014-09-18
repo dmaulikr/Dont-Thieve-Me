@@ -24,7 +24,6 @@
 		FD1247FC19BEF140008FEFD1 /* GameLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1247FB19BEF140008FEFD1 /* GameLabelView.m */; };
 		FD14109B19BFE91B005BBCEB /* EnemyView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14109A19BFE91B005BBCEB /* EnemyView.m */; };
 		FD14109E19BFEBCD005BBCEB /* EnemyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */; };
-		FD39905819C27AB200C1206D /* game.json in Resources */ = {isa = PBXBuildFile; fileRef = FD39905719C27AB200C1206D /* game.json */; };
 		FDA5660819C144E7003847AA /* EnemyViewIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA5660719C144E7003847AA /* EnemyViewIndicator.m */; };
 		FDA93E9019C7D5BC00288D9F /* scores.json in Resources */ = {isa = PBXBuildFile; fileRef = FDA93E8F19C7D5BC00288D9F /* scores.json */; };
 		FDA93E9419C7DE9E00288D9F /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA93E9219C7DE9E00288D9F /* MainMenuViewController.m */; };
@@ -68,7 +67,6 @@
 		FD14109A19BFE91B005BBCEB /* EnemyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyView.m; sourceTree = "<group>"; };
 		FD14109C19BFEBCD005BBCEB /* EnemyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyViewController.h; sourceTree = "<group>"; };
 		FD14109D19BFEBCD005BBCEB /* EnemyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyViewController.m; sourceTree = "<group>"; };
-		FD39905719C27AB200C1206D /* game.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = game.json; sourceTree = "<group>"; };
 		FDA5660619C144E7003847AA /* EnemyViewIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyViewIndicator.h; sourceTree = "<group>"; };
 		FDA5660719C144E7003847AA /* EnemyViewIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyViewIndicator.m; sourceTree = "<group>"; };
 		FDA93E8F19C7D5BC00288D9F /* scores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = scores.json; sourceTree = "<group>"; };
@@ -177,7 +175,6 @@
 			isa = PBXGroup;
 			children = (
 				FDA93E8F19C7D5BC00288D9F /* scores.json */,
-				FD39905719C27AB200C1206D /* game.json */,
 				FDA93E9119C7DE9E00288D9F /* MainMenuViewController.h */,
 				FDA93E9219C7DE9E00288D9F /* MainMenuViewController.m */,
 				FDA93E9319C7DE9E00288D9F /* MainMenuViewController.xib */,
@@ -279,7 +276,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD1247D019BEE63A008FEFD1 /* InfoPlist.strings in Resources */,
-				FD39905819C27AB200C1206D /* game.json in Resources */,
 				FDA93E9019C7D5BC00288D9F /* scores.json in Resources */,
 				FDA93E9519C7DE9E00288D9F /* MainMenuViewController.xib in Resources */,
 				FD1247D819BEE63A008FEFD1 /* Images.xcassets in Resources */,
