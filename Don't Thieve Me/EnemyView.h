@@ -14,6 +14,7 @@
 @property (nonatomic, retain) UIImage *normal;
 
 -(void)refreshViewWithTime:(float)time;
+-(void)resetLifeTimeView;
 -(void)changeImageToCaught;
 -(void)changeImageToNormal;
 @end

@@ -12,9 +12,8 @@
 
 @protocol EnemyControllerDelegate
 -(void)enemyViewCreated:(EnemyViewController *)enemyView;
-@optional
--(void)enemyWasDefeated;
 -(void)enemyDidAppear:(EnemyViewController *)enemy;
+-(void)enemyWasDefeated;
 @end
 
 @interface EnemyViewController : UIViewController

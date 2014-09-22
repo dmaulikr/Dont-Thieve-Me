@@ -36,7 +36,6 @@ int const GAMEOVER_FONT_SIZE = 35;
 float const GAMEOVER_ALPHA_VISIBLE = 1;
 float const GAMEOVER_ALPHA_NOT_VISIBLE = 0;
 
-
 @interface GameLabelView()<GameScrollDelegate>
 @property (nonatomic, assign) CGRect currentFrame;
 @end
@@ -138,19 +137,19 @@ float const GAMEOVER_ALPHA_NOT_VISIBLE = 0;
     [self isGameOverLabelHidden:YES];
 }
 
--(void)resetLabelPosition
+-(void)resetGameLabelPosition
 {
     _currentFrame.origin.x = RESET_POINT_VALUE;
     self.frame = self.currentFrame;
 }
 
--(void)isGameOverLabelHidden:(BOOL)boolean
+-(void)isGameOverLabelHidden:(BOOL)gameLabelIsHidden
 {
-    if(boolean == YES) {
+    if(gameLabelIsHidden == YES) {
         self.gameOverLabel.alpha = GAMEOVER_ALPHA_NOT_VISIBLE;
         [self.gameOverLabel sendSubviewToBack:self];
     }
-    if(boolean == NO) {
+    if(gameLabelIsHidden == NO) {
         self.gameOverLabel.alpha = GAMEOVER_ALPHA_VISIBLE;
         [self.gameOverLabel bringSubviewToFront:self];
     }
@@ -181,4 +180,5 @@ float const GAMEOVER_ALPHA_NOT_VISIBLE = 0;
     
     [super dealloc];
 }
+
 @end

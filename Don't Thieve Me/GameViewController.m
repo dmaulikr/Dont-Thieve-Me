@@ -38,8 +38,6 @@ typedef enum
 }offsetScreen;
 
 NSString *const GAMESTORE_FILEPATH = @"scores.json";
-NSString *const PATH_FOR_RESOURCE = @"scores";
-NSString *const JSON_TYPE = @"json";
 int const FIRST_OBJECT = 0;
 
 @interface GameViewController () <EnemyControllerDelegate>
@@ -70,7 +68,7 @@ int const FIRST_OBJECT = 0;
     [self readFileFromSandBox];
     
     self.longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                            action:@selector(longPressedScreen)] autorelease];
+                                                                           action:@selector(longPressedScreen)] autorelease];
 }
 
 -(void)setUpGameViewWithFrame:(CGRect)frame
@@ -105,7 +103,7 @@ int const FIRST_OBJECT = 0;
         self.enemies = [EnemyViewController generateEnemies:count
                                                    delegate:self];
         [self setCurrentScore:score];
-        [self.gameTextView resetLabelPosition];
+        [self.gameTextView resetGameLabelPosition];
         [self setGameStartingPosition];
         
         
@@ -125,13 +123,6 @@ int const FIRST_OBJECT = 0;
                                                      repeats:YES];
 }
 
--(void)enemyViewCreated:(EnemyViewController *)enemyView
-{
-    [self.view addSubview:enemyView.view];
-    [self.view addSubview:enemyView.indicator];
-    [enemyView startLifeTimer];
-}
-
 -(void)setGameStartingPosition
 {
     _currentPosition.x = GVC_ZERO;
@@ -141,7 +132,7 @@ int const FIRST_OBJECT = 0;
 -(void)refreshGame
 {
     [self.gameTextView refreshViewWithTime:_currentTime
-                              withScore:_currentScore];
+                                 withScore:_currentScore];
     [self.gameTextView resetGameOverLabel];
 }
 
@@ -197,7 +188,7 @@ int const FIRST_OBJECT = 0;
     }
     else
         [self.gameTextView showGameOverWithScore:_currentScore
-                                withHighScore:_highScore];
+                                   withHighScore:_highScore];
     
     [self.gameTextView refreshViewWithGameOverLabels];
 }
@@ -210,6 +201,13 @@ int const FIRST_OBJECT = 0;
 }
 
 #pragma mark Game Events
+-(void)enemyViewCreated:(EnemyViewController *)enemyView
+{
+    [self.view addSubview:enemyView.view];
+    [self.view addSubview:enemyView.indicator];
+    [enemyView startLifeTimer];
+}
+
 -(void)enemyWasDefeated
 {
     self.currentScore += SCORE_PER_HIT;
@@ -238,6 +236,7 @@ int const FIRST_OBJECT = 0;
     }
 }
 
+
 -(void)indicateEnemy:(EnemyViewController *)enemy atPosition:(CGPoint)position withDirection:(enumIndicator)direction
 {
     position.y = enemy.view.frame.origin.y;
@@ -245,7 +244,8 @@ int const FIRST_OBJECT = 0;
         position.x += ARROW_TO_SCREEN_MARGIN;
     if (direction == RIGHT_ARROW)
         position.x = (position.x + GAME_WIDTH) - (ARROW_IMG_WIDTH + ARROW_TO_SCREEN_MARGIN);
-    [enemy.indicator setImageDirection:direction atPoint:position];
+    [enemy.indicator setImageDirection:direction
+                               atPoint:position];
 }
 
 #pragma mark Game Helper Methods
@@ -290,10 +290,10 @@ int const FIRST_OBJECT = 0;
     _entireView = nil;
     [_gameTextView release];
     _gameTextView = nil;
-    
+    [_longPressGesture release];
+    _longPressGesture = nil;
     [_gameClock invalidate];
     _gameClock = nil;
-
     _enemies = nil;
     
     [super dealloc];

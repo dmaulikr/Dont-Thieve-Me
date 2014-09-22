@@ -88,14 +88,15 @@ int const INDICATOR_HEIGHT = 30;
     [view release];
 }
 
+#pragma mark Enemy Timer Methods
 -(void)startLifeTimer
 {
     self.lifeTimeCurrent = LIFE_TIMER;
     self.lifeTimer = [NSTimer scheduledTimerWithTimeInterval:CLOCK_TICK
-                                                  target:self
-                                                selector:@selector(fireLifeTimer:)
-                                                userInfo:nil
-                                                 repeats:YES];
+                                                      target:self
+                                                    selector:@selector(fireLifeTimer:)
+                                                    userInfo:nil
+                                                     repeats:YES];
     [self.enemyView refreshViewWithTime:self.lifeTimeCurrent];
 }
 
@@ -112,15 +113,18 @@ int const INDICATOR_HEIGHT = 30;
 {
     self.lifeTimeCurrent--;
     if(_isEnemyPermanentlyExpired == YES)
-    {
         [self invalidateTimer];
-    } else
-    {
-        if (self.lifeTimeCurrent == EV_ZERO)
-            [self expireLifeTimerWithEnemyDefeated:NO];
-        else
-            [self.enemyView refreshViewWithTime:self.lifeTimeCurrent];
-    }
+    else
+        [self persistTimer];
+}
+
+#pragma mark Enemy Expire/Restart Timer Methods
+-(void)persistTimer
+{
+    if (self.lifeTimeCurrent == EV_ZERO)
+        [self expireLifeTimerWithEnemyDefeated:NO];
+    else
+        [self.enemyView refreshViewWithTime:self.lifeTimeCurrent];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -128,10 +132,10 @@ int const INDICATOR_HEIGHT = 30;
     [self expireLifeTimerWithEnemyDefeated:YES];
 }
 
--(void)expireLifeTimerWithEnemyDefeated:(BOOL)boolean
+-(void)expireLifeTimerWithEnemyDefeated:(BOOL)enemyWasDefeated
 {
     [self invalidateTimer];
-    if(boolean == YES)
+    if(enemyWasDefeated == YES)
     {
         [self.enemyView changeImageToCaught];
         [self.delegate enemyWasDefeated];
@@ -149,7 +153,7 @@ int const INDICATOR_HEIGHT = 30;
      {
          [self.enemyView changeImageToNormal];
          [self respawnEnemyAtRandomPointInRandomQuadrant];
-         
+         [self.enemyView resetLifeTimeView];
          [UIView animateWithDuration:DISAPPEAR_DURATION
                           animations:^{
                               self.enemyView.alpha = VISIBLE;
@@ -161,6 +165,7 @@ int const INDICATOR_HEIGHT = 30;
      }];
 }
 
+#pragma mark Enemy Helper Methods
 -(void)respawnEnemyAtRandomPointInRandomQuadrant
 {
     self.currentFrame = _enemyView.frame;

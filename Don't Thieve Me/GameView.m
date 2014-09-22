@@ -59,44 +59,46 @@ typedef enum {
 -(void)setUpGestureRecognizers
 {
     UISwipeGestureRecognizer *swipeToLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self
-                                                                                      action:@selector(wasSwipedLeft)];
+                                                                                      action:@selector(swipedLeft)];
     swipeToLeft.direction = UISwipeGestureRecognizerDirectionLeft;
     [self addGestureRecognizer:swipeToLeft];
 
     UISwipeGestureRecognizer *swipeToRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self
-                                                                                       action:@selector(wasSwipedRight)];
+                                                                                       action:@selector(swipedRight)];
     swipeToRight.direction = UISwipeGestureRecognizerDirectionRight;
     [self addGestureRecognizer:swipeToRight];
 }
 
--(void)resetGameView
-{
-    _currentPoint = self.bounds.origin;
-    _currentPoint.x = MAX_SCROLL_VALUE_LEFT;
-}
-
 #pragma mark Swipe Actions and Animations
--(void)wasSwipedLeft
+-(void)swipedLeft
 {
     _currentPoint = self.bounds.origin;
     if (_currentPoint.x != MAX_SCROLL_VALUE_RIGHT)
     {
         _currentPoint.x += GAME_I4IR_WIDTH;
-        [self animateScreenWithDirection:MOVE_SCREEN_RIGHT];
+        [self animateGameScreenWithDirection:MOVE_SCREEN_RIGHT
+                                     atPoint:_currentPoint];
     }
 }
 
--(void)wasSwipedRight
+-(void)swipedRight
 {
     _currentPoint = self.bounds.origin;
     if (_currentPoint.x != MAX_SCROLL_VALUE_LEFT)
     {
         _currentPoint.x -= GAME_I4IR_WIDTH;
-        [self animateScreenWithDirection:MOVE_SCREEN_LEFT];
+        [self animateGameScreenWithDirection:MOVE_SCREEN_LEFT
+                                     atPoint:_currentPoint];
     }
 }
 
--(void)animateScreenWithDirection:(animateDirection)direction
+-(void)animateGameScreenWithDirection:(animateDirection)direction atPoint:(CGPoint)point
+{
+    [self animateGameLabelsScreenWithDirection:direction];
+    [self animateGameViewScreenToPoint:point];
+}
+
+-(void)animateGameLabelsScreenWithDirection:(animateDirection)direction
 {
     [UIView animateWithDuration:SWIPE_ANIMATION_DURATION
                           delay:GV_NONE
@@ -108,7 +110,11 @@ typedef enum {
                              [self.controller scrollScreenInDirection:SCROLL_RIGHT];
                      }
                      completion:NULL];
-    [self setContentOffset:_currentPoint
+}
+
+-(void)animateGameViewScreenToPoint:(CGPoint)point
+{
+    [self setContentOffset:point
                   animated:YES];
 }
 @end

@@ -20,9 +20,9 @@
 -(void)refreshViewWithTime:(float)time withScore:(int)score;
 -(void)refreshViewWithGameOverLabels;
 -(void)resetGameOverLabel;
--(void)isGameOverLabelHidden:(BOOL)boolean;
+-(void)resetGameLabelPosition;
+-(void)isGameOverLabelHidden:(BOOL)gameLabelIsHidden;
 
 -(void)showGameOverWithScore:(int)score withHighScore:(int)highscore;
 -(void)showGameOverWithNewHighScore:(int)score;
--(void)resetLabelPosition;
 @end

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Don&apos;t Thieve Me/EnemyViewController.m"
-            timestampString = "432719623.721638"
+            timestampString = "433051320.372298"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "-startLifeTimer"
             landmarkType = "5">
          </BreakpointContent>
