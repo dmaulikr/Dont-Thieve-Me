@@ -18,10 +18,11 @@ float const DISAPPEAR_DURATION = 0.4;
 
 typedef enum
 {
-    FIRST = 0,
-    SECOND = 1,
-    THIRD = 2,
+    FIRST_QUADRANT = 0,
+    SECOND_QUADRANT = 1,
+    THIRD_QUADRANT = 2,
 }GameQuadrant;
+
 int const SECOND_QUADRANT_POSITION = 320;
 int const THIRD_QUADRANT_POSITION = 640;
 int const GAME_QUADRANTS = 3;
@@ -172,9 +173,9 @@ int const INDICATOR_HEIGHT = 30;
     _randomQuadrant = arc4random() % GAME_QUADRANTS;
     _randomPoint = [self getRandomPoint];
     
-    if (_randomQuadrant == THIRD)
+    if (_randomQuadrant == THIRD_QUADRANT)
         _randomPoint.x += THIRD_QUADRANT_POSITION;
-    else if (_randomQuadrant == SECOND)
+    else if (_randomQuadrant == SECOND_QUADRANT)
         _randomPoint.x += SECOND_QUADRANT_POSITION;
     
     return _randomPoint;

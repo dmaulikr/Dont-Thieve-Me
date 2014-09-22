@@ -9,8 +9,10 @@
 #import "GameLabelView.h"
 #import "GameView.h"
 
-NSString *const TEXT_TIMER = @"Timer: ";
-NSString *const TEXT_SCORE = @"Score: ";
+NSString *const TIMER_LABEL = @"Timer: ";
+NSString *const SCORE_LABEL = @"Score: ";
+NSString *const SCORE_LABEL_END = @"to Go Back";
+NSString *const TIMER_LABEL_END = @"Hold Screen";
 
 NSString *const GAME_OVER_LABEL = @"GAME OVER\nScore: ";
 NSString *const GAME_OVER_LABEL_N = @"\nNew High Score!";
@@ -19,7 +21,7 @@ NSString *const GAME_OVER_LABEL_H = @"\n High Score: ";
 float const RESET_POINT_VALUE = 0;
 
 float const WIDTH_ORIGIN_MODIFIER = 10;
-float const SIZE_ORIGIN_MODIFIER = 30.0;
+float const SIZE_ORIGIN_MODIFIER = 32.0;
 float const WIDTH_MODIFIER = 3;
 float const HEIGHT_MODIFIER = 20;
 float const SCORE_WIDTH_ORIGIN_MODIFIER = 3;
@@ -27,6 +29,8 @@ float const GAMEOVER_X_MODIFIER = 2;
 float const GAMEOVER_Y_MODIFIER = 2;
 float const GAMEOVER_WIDTH_MODIFIER = 4;
 float const GAMEOVER_HEIGHT_MODIFIER = 4;
+float const FRAME_WIDTH_MODIFIER = 20;
+float const FRAME_HEIGHT_MODIFIER = 5;
 int const GAMEOVER_NUMBER_OF_LINES = 0;
 int const GAMEOVER_FONT_SIZE = 35;
 float const GAMEOVER_ALPHA_VISIBLE = 1;
@@ -46,8 +50,8 @@ float const GAMEOVER_ALPHA_NOT_VISIBLE = 0;
         _currentFrame = frame;
         CGRect labelRect = CGRectMake(_currentFrame.size.width/(_currentFrame.size.width/WIDTH_ORIGIN_MODIFIER),
                                       _currentFrame.size.height - SIZE_ORIGIN_MODIFIER,
-                                      _currentFrame.size.width/WIDTH_MODIFIER,
-                                      _currentFrame.size.height/HEIGHT_MODIFIER);
+                                      (_currentFrame.size.width/WIDTH_MODIFIER) + FRAME_WIDTH_MODIFIER,
+                                      (_currentFrame.size.height/HEIGHT_MODIFIER) + FRAME_HEIGHT_MODIFIER);
 
         [self setUpTimerLabelWithFrame:labelRect];
         
@@ -108,18 +112,24 @@ float const GAMEOVER_ALPHA_NOT_VISIBLE = 0;
 #pragma mark GameLabelView Display Methods
 -(void)refreshViewWithTime:(float)time
 {
-    self.timeLabel.text = [NSString stringWithFormat:@"%@: %.0f",TEXT_TIMER,time];
+    self.timeLabel.text = [NSString stringWithFormat:@"%@: %.0f",TIMER_LABEL,time];
 }
 
 -(void)refreshViewWithScore:(int)score
 {
-    self.scoreLabel.text = [NSString stringWithFormat:@"%@: %i",TEXT_SCORE,score];
+    self.scoreLabel.text = [NSString stringWithFormat:@"%@: %i",SCORE_LABEL,score];
 }
 
 -(void)refreshViewWithTime:(float)time withScore:(int)score
 {
     [self refreshViewWithTime:time];
     [self refreshViewWithScore:score];
+}
+
+-(void)refreshViewWithGameOverLabels
+{
+    self.scoreLabel.text = SCORE_LABEL_END;
+    self.timeLabel.text = TIMER_LABEL_END;
 }
 
 -(void)resetGameOverLabel

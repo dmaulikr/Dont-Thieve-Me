@@ -13,7 +13,6 @@
 #import "EnemyViewIndicator.h"
 #import "EnemyViewController.h"
 
-
 int const INIT_TIME = 30; //The length of time the game will run
 int const INIT_SCORE = 0; //Starting score
 int const NUMBER_OF_ENEMIES = 5; //The number of enemies appearing in all the screens at any given time
@@ -93,12 +92,9 @@ int const FIRST_OBJECT = 0;
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if(!_isGameOngoing)
-    {
-        [self beginGameWithTime:INIT_TIME
-                      withScore:INIT_SCORE
-                 withEnemyCount:NUMBER_OF_ENEMIES];
-    }
+    [self beginGameWithTime:INIT_TIME
+                  withScore:INIT_SCORE
+             withEnemyCount:NUMBER_OF_ENEMIES];
 }
 
 #pragma mark Game Setup
@@ -111,6 +107,8 @@ int const FIRST_OBJECT = 0;
         [self setCurrentScore:score];
         [self.gameTextView resetLabelPosition];
         [self setGameStartingPosition];
+        
+        
         [self beginGameWithTime:time];
         [self setIsGameOngoing:YES];
         [self refreshGame];
@@ -200,7 +198,8 @@ int const FIRST_OBJECT = 0;
     else
         [self.gameTextView showGameOverWithScore:_currentScore
                                 withHighScore:_highScore];
-   
+    
+    [self.gameTextView refreshViewWithGameOverLabels];
 }
 
 -(void)longPressedScreen
@@ -252,29 +251,29 @@ int const FIRST_OBJECT = 0;
 #pragma mark Game Helper Methods
 -(void)readFileFromSandBox
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                         NSUserDomainMask,
-                                                         YES);
-    NSString *filePath = [paths objectAtIndex:FIRST_OBJECT];
-    filePath = [filePath stringByAppendingPathComponent:GAMESTORE_FILEPATH];
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithContentsOfFile:[self dictionaryFilePath]];
     self.highScore = [[dictionary valueForKey:DICTIONARY_FILENAME] intValue];
 }
 
 -(void)writeFileToSandBox
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:self.highScore]
+                                                                         forKey:DICTIONARY_FILENAME];
+    [[NSString stringWithFormat:@"%@",dictionary] writeToFile:[self dictionaryFilePath]
+                                                   atomically:YES
+                                                     encoding:NSUTF8StringEncoding
+                                                        error:nil];
+    
+}
+
+-(NSString *)dictionaryFilePath
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                          NSUserDomainMask,
                                                          YES);
     NSString *filePath = [paths objectAtIndex:FIRST_OBJECT];
     filePath = [filePath stringByAppendingPathComponent:GAMESTORE_FILEPATH];
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:self.highScore]
-                                                                         forKey:DICTIONARY_FILENAME];
-    [[NSString stringWithFormat:@"%@",dictionary] writeToFile:filePath
-                                                   atomically:YES
-                                                     encoding:NSUTF8StringEncoding
-                                                        error:nil];
-    
+    return filePath;
 }
 
 -(NSMutableArray *)enemies

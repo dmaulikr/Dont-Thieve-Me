@@ -18,6 +18,7 @@
 -(void)refreshViewWithTime:(float)time;
 -(void)refreshViewWithScore:(int)score;
 -(void)refreshViewWithTime:(float)time withScore:(int)score;
+-(void)refreshViewWithGameOverLabels;
 -(void)resetGameOverLabel;
 -(void)isGameOverLabelHidden:(BOOL)boolean;
 
