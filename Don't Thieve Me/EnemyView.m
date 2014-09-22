@@ -72,6 +72,7 @@ float const CHAR_CTR_H = 15;
 {
     self.labelLifeTime.text = [NSString stringWithFormat:RESET_LABEL];
 }
+
 -(void)changeImageToCaught
 {
     self.image = _caught;

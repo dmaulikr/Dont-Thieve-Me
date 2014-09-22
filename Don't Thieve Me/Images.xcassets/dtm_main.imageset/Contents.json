@@ -6,7 +6,8 @@
       "filename" : "dtm_main.png"
     },
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
+      "subtype" : "retina4",
       "scale" : "2x"
     }
   ],

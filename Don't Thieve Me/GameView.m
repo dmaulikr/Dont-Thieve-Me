@@ -8,7 +8,7 @@
 
 #import "GameView.h"
 
-NSString *const MAP_IMG_I4 = @"dtm_map_med";
+NSString *const MAP_IMG_I4 = @"dtm_med568";
 NSString *const MAP_IMG_I35 =@"dtm_med480";
 
 int const GAME_I4IR_WIDTH = 320;
